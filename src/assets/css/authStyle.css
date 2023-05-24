@@ -6,22 +6,23 @@
 
 .login-body {
   display: flex;
-
+  position: relative;
   justify-content: center;
   align-items: center;
   font-family: "Montserrat", sans-serif;
   height: 100vh;
 
   min-height: 100vh;
-  background-image: url("../images/hinhnen.png");
+  background-image: url("../../../public/hinhnen.jpg");
+  background-position-y: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 .button-login {
   border-radius: 20px;
-  border: 1px solid #ffa2b0;
-  background-color: #ffa2b0;
+  border: 1px solid rgb(179, 140, 107);
+  background-color: rgb(179, 140, 107);
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
@@ -32,62 +33,8 @@
   cursor: pointer;
 }
 
-.button-otp {
-  border-radius: 20px;
-  border: 1px solid #ffa2b0;
-  background-color: #f3595b;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 12px 64px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: transform 80ms ease-in;
-  cursor: pointer;
-}
-
-.button-resent-otp {
-  border-radius: 20px;
-  border: 1px solid #f3595b;
-  background-color: #ffffff;
-  color: #f3595b;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 12px 40px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: transform 80ms ease-in;
-  cursor: pointer;
-  margin-bottom: 30px;
-}
-
-.resent-opt-ctn {
-  position: absolute;
-  bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-.resent-opt-ctn > p {
-  margin-bottom: 10px;
-}
-
-.btn-popt-back {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 13px;
-  padding: 10opx;
-  cursor: pointer;
-}
-
 .button-login:active {
   transform: scale(0.95);
-}
-
-.button-login:focus {
-  outline: none;
 }
 
 .btn-ghost {
@@ -170,3 +117,15 @@
 .mar-10 {
   margin-bottom: 10px;
 }
+
+.company-name {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.company-name> span {
+ color: rgb(233, 233, 233);
+ font-weight: 600;
+}
+
