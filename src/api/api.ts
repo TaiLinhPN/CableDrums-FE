@@ -12,7 +12,7 @@ interface ApiConfig extends AxiosRequestConfig {
   };
 }
 export const apiConfig: ApiConfig = {
-  baseURL: process.env.REACT_APP_API_BASE_URL || "http://localhost:4001",
+  baseURL: process.env.REACT_APP_API_BASE_URL || "http://3.25.82.146:4001/",
   timeout: 10000,
 };
 
