@@ -59,3 +59,11 @@
 .resizer2{
    left: 0;
 }
+
+.ant-modal-footer button:nth-child(2) {
+   display: none;
+}
+
+Nav {
+   background-color: rgb(179, 140, 107);
+}

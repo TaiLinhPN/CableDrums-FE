@@ -1,56 +1,63 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginApi, LoginData } from "../../api/authApi";
-import { messageError, messageSuccess } from "../../utils/notifi";
-import { socket } from "../../utils/socket";
+import { LoginData, loginApi } from "../../api/authApi";
 import { clearAllStorage } from "../../utils/storage";
 import { setUser } from "./useSlice";
+import {
+  messageError,
+  messageSuccess,
+  messageWaning,
+} from "../../utils/notify";
+import { socket } from "../../utils/socket";
 
-interface initialStateProps {
-  isLogin: boolean
+interface InitialState {
+  stateAuth: StateAuth;
 }
+export type StateAuth = "isLogin" | "isLogout" | "isResetPassword";
 
-const initialState: initialStateProps = {
-  isLogin: false
-}
+const initialState: InitialState = {
+  stateAuth: "isLogout",
+};
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
-     setLogin: (state) => {
-      state.isLogin = true;
+    setStateAuth: (state, action) => {
+      state.stateAuth = action.payload;
     },
-    setLogOut: (state) => {
-      state.isLogin = false;
-    },
-  }
-})
+  },
+});
 
-const { setLogin, setLogOut } = authSlice.actions;
+const { setStateAuth } = authSlice.actions;
 
 export const login = (user: LoginData) => async (dispatch: Function) => {
   try {
     const response = await loginApi(user);
-    if (response.status === 200) {
-      const { data } = response.data
+    const { data } = response.data;
 
-      console.log(data);
-      
-      
-      messageSuccess("Login successful, welcome");
-      dispatch(setLogin());
+    if (response.status === 200) {
+      dispatch(setStateAuth("isLogin"));
       dispatch(setUser(data.user));
+
+      messageSuccess("Login successful, welcome");
       socket.emit("user-connect", data.user._id);
+    } else if (response.status === 201) {
+      dispatch(setStateAuth("isResetPassword"));
+
+      messageWaning("You must reset password for the first login");
     }
-  } catch (error: any) {
-    console.log(error);
+  } catch (error) {
+    console.log("Error login:", error);
     messageError(error);
   }
 };
 
 export const logout = () => async (dispatch: Function) => {
   clearAllStorage();
-  dispatch(setLogOut());
+  dispatch(setStateAuth("isLogout"));
   window.location.reload();
 };
 
-export default authSlice
+export const resetPassword = () => async (dispatch: Function) => {
+  dispatch(setStateAuth("isLogout"));
+};
+export default authSlice;

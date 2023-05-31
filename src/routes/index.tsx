@@ -1,24 +1,22 @@
 import { Route, Routes } from "react-router-dom";
-import MainPage from "../pages/MainPage";
-import LoginPage from "../pages/LoginPage";
-import PrivateRoute from "../containers/PrivateRouteContainer";
+import PrivateRoute from "./PrivateRoute";
+import MainLayout from "../layout/MainLayout";
+import AccountTable from "../pages/MainPage";
 
-const Router = () => {
+const RouterApp = () => {
   return (
-    <Routes>
-      <Route path="/cable-drums">
-        <Route
-          path=""
-          element={
-            <PrivateRoute>
-              <MainPage />
-            </PrivateRoute>
-          }
-        />
-        <Route path="login" element={<LoginPage />} />
-      </Route>
-    </Routes>
+    <div>
+      <Routes>
+        <Route path="/">
+          <Route element={<PrivateRoute />}>
+            <Route element={<MainLayout />}>
+              <Route path="" element={<AccountTable />} />
+            </Route>
+          </Route>
+        </Route>
+      </Routes>
+    </div>
   );
 };
 
-export default Router;
+export default RouterApp;

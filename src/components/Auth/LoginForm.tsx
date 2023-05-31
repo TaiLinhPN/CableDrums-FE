@@ -1,18 +1,16 @@
 import { Form, Input } from "antd";
 import { useState } from "react";
-import { LoginData } from "../../api/authApi";
+import { login } from "../../redux/slice/authSlice";
+import { useDispatch } from "react-redux";
 
-interface LoginFormProps {
-  login: (data: LoginData) => void;
-}
-const LoginForm = ({ login }: LoginFormProps) => {
+const LoginForm = () => {
+  const dispatch = useDispatch();
   const [userLogin, setUserLogin] = useState<any>({
     email: "",
     password: "",
   });
-
   const handleSubmitLogin = () => {
-    login(userLogin);
+    login(userLogin)(dispatch);
   };
 
   const handleInputChangeLogin = (
@@ -64,9 +62,7 @@ const LoginForm = ({ login }: LoginFormProps) => {
         <a style={{ marginBottom: "10px" }} href="#">
           Forgot password?
         </a>
-        <button className="button-login">
-          Log in
-        </button>
+        <button className="button-login">Log in</button>
       </Form>
     </div>
   );

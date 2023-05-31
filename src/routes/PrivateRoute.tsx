@@ -1,20 +1,18 @@
-import { ReactNode } from "react";
-// import { useNavigate } from "react-router-dom";
-import LoginPage from "../pages/LoginPage";
+import { useSelector } from "react-redux";
+import AuthPage from "../pages/AuthPage";
+import { Outlet } from "react-router-dom";
+import { RootState } from "../redux/store";
 
-interface PrivateRouteProp {
-  children: ReactNode;
-  isLogin: boolean;
-}
 
-const PrivateRoute = (props: PrivateRouteProp) => {
-  // const navigation = useNavigate();
 
-  const auth = props.isLogin;
-  if (!auth) {
-    console.log("please login");
+const PrivateRoute = () => {
+  const stateAuth = useSelector((state: RootState) => state.auth.stateAuth);
+
+  if (stateAuth === "isLogin") {
+    return <Outlet />;
+  } else {
+    return <AuthPage />;
   }
-  return <>{auth ? props.children : <LoginPage />}</>;
 };
 
 export default PrivateRoute;

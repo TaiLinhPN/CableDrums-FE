@@ -4,13 +4,13 @@ export interface userData {
   userId: string;
   name: string;
   email: string;
-  avatar: string;
+  userType: string;
 }
 const initialState = {
   userId: "",
   name: "",
   email: "",
-  avatar: "",
+  userType: "",
 };
 
 const userSlice = createSlice({
@@ -21,7 +21,7 @@ const userSlice = createSlice({
       state.userId = action.payload._id;
       state.email = action.payload.email;
       state.name = action.payload.username;
-      state.avatar = action.payload.avatar;
+      state.userType = action.payload.userType;
     },
   },
 });
