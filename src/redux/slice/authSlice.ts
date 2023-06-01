@@ -28,11 +28,13 @@ const authSlice = createSlice({
 });
 
 const { setStateAuth } = authSlice.actions;
+export { setStateAuth };
 
 export const login = (user: LoginData) => async (dispatch: Function) => {
   try {
     const response = await loginApi(user);
     const { data } = response.data;
+    console.log(response.status);
 
     if (response.status === 200) {
       dispatch(setStateAuth("isLogin"));
@@ -40,12 +42,12 @@ export const login = (user: LoginData) => async (dispatch: Function) => {
 
       messageSuccess("Login successful, welcome");
       socket.emit("user-connect", data.user._id);
-    } else if (response.status === 201) {
+    }
+  } catch (error:any) {
+    if (error.response.status === 400) {
       dispatch(setStateAuth("isResetPassword"));
-
       messageWaning("You must reset password for the first login");
     }
-  } catch (error) {
     console.log("Error login:", error);
     messageError(error);
   }

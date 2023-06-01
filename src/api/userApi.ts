@@ -4,7 +4,6 @@ const FIND_USER_URL = "/api/user/find";
 const GET_ALL_USER_URL = "/api/user/get-all";
 const DELETE_USER_URL = "/api/user/delete/";
 const CREATE_USER_URL = "/api/user/create";
-const RESET_PASSWORD_URL = "/api/user/reset-password";
 
 export interface FindUserData {
   query: string;
@@ -16,10 +15,7 @@ export interface CreateUserApi {
   userType: UserType | null;
 }
 
-export interface ResetPasswordApi {
-  email: string;
-  password: string;
-}
+
 export type UserType = "admin" | "planner" | "supplyVendor" | "projectContractor";
 
 export const findUserApi = async (data: FindUserData) => {
@@ -38,6 +34,4 @@ export const createUserApi = async (data: CreateUserApi) => {
   return await api.post(apiConfig.baseURL + CREATE_USER_URL, data);
 };
 
-export const resetPasswordApi = async (data: ResetPasswordApi) => {
-  return await api.post(apiConfig.baseURL + RESET_PASSWORD_URL, data);
-};
+

@@ -1,15 +1,22 @@
 import { useRef } from "react";
 import { messageErrorLog } from "../../utils/notify";
-import { resetPasswordApi } from "../../api/userApi";
+import { resetPasswordApi } from "../../api/authApi";
+import { useDispatch } from "react-redux";
+import { setStateAuth } from "../../redux/slice/authSlice";
 
 const ResetPasswordForm = () => {
+  const dispatch = useDispatch()
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (emailRef.current && passwordRef.current && confirmPasswordRef.current) {
+    if (
+      emailRef.current?.value &&
+      passwordRef.current?.value &&
+      confirmPasswordRef.current?.value
+    ) {
       if (passwordRef.current.value !== confirmPasswordRef.current.value) {
         messageErrorLog("Passwords do not match");
         return;
@@ -25,24 +32,29 @@ const ResetPasswordForm = () => {
     const resetPass = {
       email: emailRef.current!.value,
       password: passwordRef.current!.value,
-      };
-      try {
-         const response = await resetPasswordApi(resetPass);
-          if (response.status === 201) {
-             //setlogin
-              emailRef.current!.value = "";
-              passwordRef.current!.value = ""
-              confirmPasswordRef.current!.value = "";
-         }
-      } catch (error) {
-        
+    };
+    try {
+      const response = await resetPasswordApi(resetPass);
+      if (response.status === 200) {
+       dispatch(setStateAuth("isLogout"))
+        emailRef.current!.value = "";
+        passwordRef.current!.value = "";
+        confirmPasswordRef.current!.value = "";
+      } else if (response.status === 400) {
+        messageErrorLog(response.data.message);
       }
-     
+    } catch (error) {}
   };
 
   return (
-    <div className="form-login">
-      <h1 className="text-2xl font-bold mb-4">Reset Password</h1>
+    <div className="form-login relative ">
+      <div
+        className="text-xs absolute top-1 left-1 cursor-pointer"
+        onClick={() => dispatch(setStateAuth("isLogout"))}
+      >
+        Back to login
+      </div>
+      <h1 className="text-2xl font-bold mb-4 ">Reset Password</h1>
 
       <div className="mb-4  w-3/4">
         <input
@@ -69,7 +81,7 @@ const ResetPasswordForm = () => {
       </div>
 
       <button className="button-login" onClick={(e) => handleSubmit(e)}>
-        Change password
+        Reset
       </button>
     </div>
   );

@@ -1,8 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import {
-  getAccessToken,
-  setAccessToken,
-} from "../utils/storage";
+import { getAccessToken, setAccessToken } from "../utils/storage";
 
 interface ApiConfig extends AxiosRequestConfig {
   baseURL: string;
@@ -12,7 +9,7 @@ interface ApiConfig extends AxiosRequestConfig {
   };
 }
 export const apiConfig: ApiConfig = {
-  baseURL: process.env.REACT_APP_API_BASE_URL || "http://3.25.82.146:4001",
+  baseURL: process.env.REACT_APP_API_BASE_URL || "http://localhost:4001",
   timeout: 10000,
 };
 
@@ -28,11 +25,11 @@ api.interceptors.request.use(async (config) => {
 
 api.interceptors.response.use(
   async (response: AxiosResponse) => {
-   const { data } = response;
+    const { data } = response.data;
 
-    if (data && data.token && data.token.accessToken) {
-      const { accessToken } = data.token;
-      setAccessToken(accessToken);
+    if (data?.token) {
+      console.log(data.token);
+       setAccessToken(data.token.accessToken);
     }
 
     return response;

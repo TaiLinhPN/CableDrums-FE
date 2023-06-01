@@ -4,7 +4,11 @@ export interface userData {
   userId: string;
   name: string;
   email: string;
-  userType: string;
+  userType:
+    | "admin"
+    | "planner"
+    | "supplyVendor"
+    | "projectContractor";
 }
 const initialState = {
   userId: "",

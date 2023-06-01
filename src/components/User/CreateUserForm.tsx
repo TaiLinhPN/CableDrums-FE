@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { CreateUserApi, UserType } from "../../api/userApi";
 import { messageErrorLog } from "../../utils/notify";
 import { createUser } from "../../helpers/userHelper";
+// var bcrypt = require("bcryptjs");
 
 interface CreateUserFormProps {
   setModel: (isOpen: boolean) => void;
@@ -13,6 +14,7 @@ const CreateUserForm = ({ setModel }: CreateUserFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (
       usernameRef.current &&
       emailRef.current &&

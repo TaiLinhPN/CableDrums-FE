@@ -1,4 +1,4 @@
-import { CreateUserApi, ResetPasswordApi, createUserApi, getAllUsersApi, removeUserApi, resetPasswordApi } from "../api/userApi";
+import { CreateUserApi,  createUserApi, getAllUsersApi, removeUserApi } from "../api/userApi";
 import { messageError, messageSuccess } from "../utils/notify";
 
 export const fetchAccountsData = async () => {
@@ -42,11 +42,3 @@ try {
   return false
 }
 
-export const resetPassword = async (data: ResetPasswordApi) => { 
-  const response = await resetPasswordApi(data);
-  if (response.status === 201) {
-    messageSuccess("User created successfully");
-    return true
-  }
-  return false
-}

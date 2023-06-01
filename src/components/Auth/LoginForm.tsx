@@ -1,6 +1,6 @@
 import { Form, Input } from "antd";
 import { useState } from "react";
-import { login } from "../../redux/slice/authSlice";
+import { login, setStateAuth } from "../../redux/slice/authSlice";
 import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
@@ -22,49 +22,50 @@ const LoginForm = () => {
     setUserLogin({ ...userLogin, [name]: value });
   };
   return (
-    <div className="form-container ">
-      <Form className="form-login" onFinish={handleSubmitLogin}>
-        <h1 className="head">Log in</h1>
-        <div>
-          <Form.Item
+    <Form className="form-login" onFinish={handleSubmitLogin}>
+      <h1 className="head">Log in</h1>
+      <div>
+        <Form.Item
+          name="email"
+          rules={[{ required: true, message: "Please enter your name" }]}
+        >
+          <Input
+            placeholder="Your email?"
+            className={"input-login"}
             name="email"
-            rules={[{ required: true, message: "Please enter your name" }]}
-          >
-            <Input
-              placeholder="Your email?"
-              className={"input-login"}
-              name="email"
-              value={userLogin.email}
-              onChange={handleInputChangeLogin}
-            />
-          </Form.Item>
-        </div>
+            value={userLogin.email}
+            onChange={handleInputChangeLogin}
+          />
+        </Form.Item>
+      </div>
 
-        <div>
-          <Form.Item
+      <div>
+        <Form.Item
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please enter your password",
+            },
+          ]}
+        >
+          <Input.Password
+            placeholder="Password?"
+            className={"input-login"}
             name="password"
-            rules={[
-              {
-                required: true,
-                message: "Please enter your password",
-              },
-            ]}
-          >
-            <Input.Password
-              placeholder="Password?"
-              className={"input-login"}
-              name="password"
-              value={userLogin.password}
-              onChange={handleInputChangeLogin}
-            />
-          </Form.Item>
-        </div>
-        <a style={{ marginBottom: "10px" }} href="#">
-          Forgot password?
-        </a>
-        <button className="button-login">Log in</button>
-      </Form>
-    </div>
+            value={userLogin.password}
+            onChange={handleInputChangeLogin}
+          />
+        </Form.Item>
+      </div>
+      <a
+        style={{ marginBottom: "10px" }}
+        onClick={() => dispatch(setStateAuth("isResetPassword"))}
+      >
+        Forgot password?
+      </a>
+      <button className="button-login">Log in</button>
+    </Form>
   );
 };
 
