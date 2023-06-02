@@ -1,21 +1,32 @@
 import { Button, Modal } from "antd";
-import { removeUser } from "../../helpers/userHelper";
-import { useAccountsData } from "../../hooks/useAccountsData";
+import { Account, useAccountsData } from "../../hooks/useAccountsData";
 import { useState } from "react";
 import CreateUserForm from "../User/CreateUserForm";
+import RemoveUserForm from "../User/RemoveUserForm";
 
 const headerTitles = ["NO.", "Username", "Email", "User Type", "Handle"];
 
 const AdminSpace = () => {
   const { accounts } = useAccountsData();
-  const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<Account>({
+    _id: "",
+    username: "",
+    userType: "",
+    email: "",
+  });
+  const [openModalCreate, setOpenModalCreate] = useState(false);
+  const [openModalRemove, setOpenModalRemove] = useState(false);
+  const handleDelete = (id: string) => {
+    const user = accounts.find((acc: Account) => acc._id === id);
+    setUser(user as Account);
 
-  const handleDelete = async (id: string) => {
-    await removeUser(id);
+    setOpenModalRemove(!openModalRemove);
   };
+  //
+
   return (
     <div className="container mx-auto">
-      <Button onClick={() => setOpen(true)}>Create</Button>
+      <Button onClick={() => setOpenModalCreate(true)}>Create</Button>
       <table className="min-w-full divide-y divide-gray-200">
         <thead>
           <tr>
@@ -57,15 +68,27 @@ const AdminSpace = () => {
         </tbody>
       </table>
 
-      <Modal
-        centered
-        open={open}
-        onOk={() => setOpen(false)}
-        onCancel={() => setOpen(false)}
-        width={400}
-      >
-        <CreateUserForm setModel={setOpen} />
-      </Modal>
+      {
+        <Modal
+          centered
+          open={openModalCreate}
+          onCancel={() => setOpenModalCreate(false)}
+          width={400}
+        >
+          <CreateUserForm setModel={setOpenModalCreate} />
+        </Modal>
+      }
+
+      {openModalRemove && (
+        <Modal
+          centered
+          open={openModalRemove}
+          onCancel={() => setOpenModalRemove(false)}
+          width={300}
+        >
+          <RemoveUserForm setModel={setOpenModalRemove} user={user} />
+        </Modal>
+      )}
     </div>
   );
 };

@@ -67,3 +67,16 @@
 Nav {
    background-color: rgb(179, 140, 107);
 }
+
+.ant-modal-content{
+   padding: 0 !important;
+}
+
+.ant-modal-footer{
+margin: 0 !important;
+}
+
+.ant-modal-footer button:nth-child(1) {
+   margin-bottom: 16px;
+   margin-right: 12px;
+}
