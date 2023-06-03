@@ -1,8 +1,14 @@
+import { ReactNode } from "react";
 
-const SitaBar = () => {
-  return (
-    <div className="bg-gray-200">SitaBar</div>
-  )
+interface SideBarProps {
+  children: ReactNode;
 }
+const SideBar = ({ children }: SideBarProps) => {
+  return (
+    <aside className="bg-gray-200 w-64  ">
+      <div>{children}</div>
+    </aside>
+  );
+};
 
-export default SitaBar
+export default SideBar;

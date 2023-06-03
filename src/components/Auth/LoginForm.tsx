@@ -1,16 +1,48 @@
 import { Form, Input } from "antd";
 import { useState } from "react";
-import { login, setStateAuth } from "../../redux/slice/authSlice";
+import { setStateAuth } from "../../redux/slice/authSlice";
 import { useDispatch } from "react-redux";
+import { loginApi } from "../../api/authApi";
+import { socket } from "../../utils/socket";
+import {
+  messageError,
+  messageSuccess,
+  messageWaning,
+} from "../../utils/notify";
+import { useNavigate } from "react-router-dom";
+import { setUserReducer } from "../../redux/slice/useSlice";
 
-const LoginForm = () => {
+interface LoginFormProps {
+  setOpenLogin: (x: boolean) => void;
+}
+const LoginForm = ({ setOpenLogin }: LoginFormProps) => {
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
   const [userLogin, setUserLogin] = useState<any>({
     email: "",
     password: "",
   });
-  const handleSubmitLogin = () => {
-    login(userLogin)(dispatch);
+  const handleSubmitLogin = async () => {
+    try {
+      const response = await loginApi(userLogin);
+      const { data } = response.data;
+      console.log(response.status);
+
+      if (response.status === 200) {
+        dispatch(setStateAuth("isLogin"));
+        dispatch(setUserReducer(data.user));
+        Navigate("/");
+        messageSuccess("Login successful, welcome");
+        socket.emit("user-connect", data.user._id);
+      }
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        dispatch(setStateAuth("isResetPassword"));
+        messageWaning("You must reset password for the first login");
+      }
+      console.log("Error login:", error);
+      messageError(error);
+    }
   };
 
   const handleInputChangeLogin = (
@@ -58,10 +90,7 @@ const LoginForm = () => {
           />
         </Form.Item>
       </div>
-      <a
-        style={{ marginBottom: "10px" }}
-        onClick={() => dispatch(setStateAuth("isResetPassword"))}
-      >
+      <a style={{ marginBottom: "10px" }} onClick={() => setOpenLogin(false)}>
         Forgot password?
       </a>
       <button className="button-login">Log in</button>

@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { CreateUserApi, UserType } from "../../api/userApi";
 import { messageErrorLog } from "../../utils/notify";
 import { createUser } from "../../helpers/userHelper";
-// var bcrypt = require("bcryptjs");
 
 interface CreateUserFormProps {
   setModel: (isOpen: boolean) => void;
@@ -39,7 +38,7 @@ const CreateUserForm = ({ setModel }: CreateUserFormProps) => {
   };
 
   return (
-    <div className="form-login">
+    <div className="form-login pt-4 rounded-xl ">
       <h1 className="text-2xl font-bold mb-4">Create Account</h1>
 
       <div className="mb-4  w-3/4">

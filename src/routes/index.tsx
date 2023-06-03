@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import MainLayout from "../layout/MainLayout";
 import MainPage from "../pages/MainPage";
+import AuthPage from "../pages/AuthPage";
 
 const RouterApp = () => {
   return (
@@ -13,6 +14,7 @@ const RouterApp = () => {
           </Route>
         </Route>
       </Route>
+      <Route path="/login" element={<AuthPage />} />
     </Routes>
   );
 };

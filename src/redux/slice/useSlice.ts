@@ -30,10 +30,6 @@ const userSlice = createSlice({
   },
 });
 
-const { setUserReducer } = userSlice.actions;
-
-export const setUser = (userData: userData) => async (dispatch: Function) => {
-  dispatch(setUserReducer(userData));
-};
+export const { setUserReducer } = userSlice.actions;
 
 export default userSlice;

@@ -5,6 +5,7 @@ import PlannerSpace from "../components/workSpaces/PlannerSpace";
 import ProjectContractorSpace from "../components/workSpaces/ProjectContractorSpace";
 import SupplyVendorSpace from "../components/workSpaces/SupplyVendorSpace";
 import { Spin } from "antd";
+import { Navigate } from "react-router-dom";
 
 const MainPage = () => {
   const userType = useSelector((state: RootState) => state.user.userType);
@@ -17,7 +18,7 @@ const MainPage = () => {
 
     case "supplyVendor":
       return <SupplyVendorSpace />;
-    
+
     case "projectContractor":
       return <ProjectContractorSpace />;
 
@@ -26,6 +27,7 @@ const MainPage = () => {
         <div className="flex flex-col  items-center">
           <Spin tip="Loading" size="large"></Spin>
           <div>User not found</div>
+          <Navigate to="/login" />
         </div>
       );
   }

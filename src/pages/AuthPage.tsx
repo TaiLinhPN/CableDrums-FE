@@ -1,18 +1,21 @@
-import { useSelector } from "react-redux";
 import "../assets/css/authStyle.css";
 import ResetPasswordForm from "../components/Auth/ResetPasswordForm";
-import { RootState } from "../redux/store";
 import LoginForm from "../components/Auth/LoginForm";
+import { useState } from "react";
 
 const AuthPage = () => {
-  const stateAuth = useSelector((state: RootState) => state.auth.stateAuth);
+  const [isOpenLogin, setOpenLogin] = useState(true)
   return (
     <div className="login-body">
       <p className="company-name">
         <span>EnergySure tech</span> Energy Corporation
       </p>
       <div className="form-container ">
-        {stateAuth === "isLogout" ? <LoginForm /> : <ResetPasswordForm />}
+        {isOpenLogin ? (
+          <LoginForm setOpenLogin={setOpenLogin} />
+        ) : (
+          <ResetPasswordForm setOpenLogin={setOpenLogin} />
+        )}
       </div>
     </div>
   );

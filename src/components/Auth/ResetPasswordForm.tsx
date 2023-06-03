@@ -1,11 +1,11 @@
 import { useRef } from "react";
 import { messageErrorLog } from "../../utils/notify";
 import { resetPasswordApi } from "../../api/authApi";
-import { useDispatch } from "react-redux";
-import { setStateAuth } from "../../redux/slice/authSlice";
 
-const ResetPasswordForm = () => {
-  const dispatch = useDispatch()
+interface ResetPasswordFormProps {
+  setOpenLogin: (x: boolean) => void;
+}
+const ResetPasswordForm = ({ setOpenLogin }: ResetPasswordFormProps) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
@@ -36,7 +36,7 @@ const ResetPasswordForm = () => {
     try {
       const response = await resetPasswordApi(resetPass);
       if (response.status === 200) {
-       dispatch(setStateAuth("isLogout"))
+        setOpenLogin(true)
         emailRef.current!.value = "";
         passwordRef.current!.value = "";
         confirmPasswordRef.current!.value = "";
@@ -50,7 +50,7 @@ const ResetPasswordForm = () => {
     <div className="form-login relative ">
       <div
         className="text-xs absolute top-1 left-1 cursor-pointer"
-        onClick={() => dispatch(setStateAuth("isLogout"))}
+        onClick={() => setOpenLogin(true)}
       >
         Back to login
       </div>

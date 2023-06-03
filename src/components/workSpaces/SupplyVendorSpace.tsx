@@ -1,7 +1,7 @@
 
 const SupplyVendorSpace = () => {
   return (
-    <div>SupplyVendorSppace</div>
+    <div>SupplyVendorSpace</div>
   )
 }
 

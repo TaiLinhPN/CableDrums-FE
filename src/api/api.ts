@@ -26,16 +26,13 @@ api.interceptors.request.use(async (config) => {
 api.interceptors.response.use(
   async (response: AxiosResponse) => {
     const { data } = response.data;
-
-    if (data?.token) {
-      console.log(data.token);
-       setAccessToken(data.token.accessToken);
-    }
-
+    
+    if (data?.token) setAccessToken(data.token.accessToken);
     return response;
   },
   async (error) => {
-    if (error.response && error.response.status === 401) {
+    if (error.response && error.response.status === 403) {
+      window.location.href = "/login";
     }
     throw error;
   }
