@@ -2,8 +2,8 @@ import { useSelector } from "react-redux";
 import AdminSpace from "../components/workSpaces/AdminSpace";
 import { RootState } from "../redux/store";
 import PlannerSpace from "../components/workSpaces/PlannerSpace";
-import ProjectContractorSpace from "../components/workSpaces/ProjectContractorSpace";
-import SupplyVendorSpace from "../components/workSpaces/SupplyVendorSpace";
+import ProjectContractorSpace from "../components/workSpaces/ProjectContractor";
+import SupplyVendorSpace from "../components/workSpaces/SupplyVendor";
 import { Spin } from "antd";
 import { Navigate } from "react-router-dom";
 

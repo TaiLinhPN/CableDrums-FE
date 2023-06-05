@@ -10,13 +10,12 @@ export interface Contract {
   };
   cableDrumCount: number;
   cableDelivered: number;
+  cableRequired: number;
   expireAt: string;
   createAt: string;
 }
 export function useContractData() {
   const [contracts, setContracts] = useState<Contract[]>([]);
-  console.log(contracts);
-
   const fetchContact = async () => {
     const response = await getAllContractApi();
     if (response.status === 201) {

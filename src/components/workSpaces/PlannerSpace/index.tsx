@@ -1,11 +1,10 @@
 import { useState } from "react";
 import SideBar from "../../SideBar";
-import AccountTable from "../../Table/AccountTable";
 import ContractTable from "../../Table/ContractTable";
+import OrderTable from "../../Table/OrderTable";
 
-const AdminSpace = () => {
+const PlannerSpace = () => {
   const [selectedTable, setSelectedTable] = useState(1);
-
   const handleButtonClick = (tableNumber: number) => {
     setSelectedTable(tableNumber);
   };
@@ -20,7 +19,7 @@ const AdminSpace = () => {
               selectedTable === 1 ? "bg-stone-500 text-white" : "bg-gray-200"
             } px-4 py-2`}
           >
-            Account
+            Contract
           </button>
 
           <button
@@ -29,16 +28,16 @@ const AdminSpace = () => {
               selectedTable === 2 ? "bg-stone-500 text-white" : "bg-gray-200"
             } px-4 py-2 `}
           >
-            Contract
+            Order
           </button>
         </div>
       </SideBar>
       <div className="container mx-auto p-4">
-        {selectedTable === 1 && <AccountTable />}
-        {selectedTable === 2 && <ContractTable />}
+        {selectedTable === 1 && <ContractTable />}
+        {selectedTable === 2 && <OrderTable />}
       </div>
     </div>
   );
 };
 
-export default AdminSpace;
+export default PlannerSpace;

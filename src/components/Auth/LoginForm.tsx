@@ -39,6 +39,7 @@ const LoginForm = ({ setOpenLogin }: LoginFormProps) => {
       if (error.response.status === 400) {
         dispatch(setStateAuth("isResetPassword"));
         messageWaning("You must reset password for the first login");
+        setOpenLogin(false)
       }
       console.log("Error login:", error);
       messageError(error);
