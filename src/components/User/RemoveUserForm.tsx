@@ -1,27 +1,30 @@
-import { Account } from "../../hooks/useAccountsData";
 import { removeUser } from "../../helpers/userHelper";
 import { useEffect, useState } from "react";
 import { Button } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { setOpenModalRemove } from "../../redux/slice/accountSlice";
 
-interface RemoveUserFormProps {
-  setModel: (isOpen: boolean) => void;
-  user: Account;
-}
 
-const RemoveUserForm = ({ setModel, user }: RemoveUserFormProps) => {
+const RemoveUserForm = () => {
+  const dispatch = useDispatch()
+  const { readyToRemoveAccount } = useSelector(
+    (state: RootState) => state.account
+  );
+
   const [isConfirm, setConfirm] = useState(false);
   const [isButtonDisabled, setButtonDisabled] = useState(true);
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    if (input === user.username) {
+    if (input === readyToRemoveAccount.username) {
       setButtonDisabled(false);
-    }else setButtonDisabled(true);
+    } else setButtonDisabled(true);
   }, [input]);
 
   const handleRemoveUser = async () => {
-    await removeUser(user._id);
-    setModel(false);
+    await removeUser(readyToRemoveAccount._id);
+    dispatch(setOpenModalRemove(false));
   };
 
   return (
@@ -47,8 +50,10 @@ const RemoveUserForm = ({ setModel, user }: RemoveUserFormProps) => {
           <div>
             <p className="mb-2">
               To confirm, type "
-              <span className="text-amber-500">{user.username}</span>" in the
-              box below:
+              <span className="text-amber-500">
+                {readyToRemoveAccount.username}
+              </span>
+              " in the box below:
             </p>
             <input
               value={input}

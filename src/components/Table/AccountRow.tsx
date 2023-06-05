@@ -1,7 +1,7 @@
 
 import { ReactNode } from "react";
-import { Account } from "../../hooks/useAccountsData";
 import Td from "./Td";
+import { Account } from "../../redux/slice/accountSlice";
 
 interface AccountRowProps {
   children?: ReactNode;
@@ -11,7 +11,7 @@ interface AccountRowProps {
 
 const AccountRow = ({ account, no, children }: AccountRowProps) => {
   return (
-    <tr key={account._id} className="hover:bg-gray-100">
+    <tr className="hover:bg-gray-100">
       <Td>{no}</Td>
       <Td>{account.username}</Td>
       <Td>{account.email}</Td>

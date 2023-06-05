@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Order } from "../../hooks/useOrderData";
 import Td from "./Td";
 import { Button } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { updateOrderApi } from "../../api/orderApi";
 import { messageError, messageSuccess } from "../../utils/notify";
+import { Order } from "../../redux/slice/orderSlice";
 
 interface OrderRowProps {
   order: Order;

@@ -1,9 +1,12 @@
 import { Skeleton } from "antd";
-import { useOrderData } from "../../hooks/useOrderData";
 import MyTable from ".";
 import Thead from "./Thead";
 import TBody from "./TBody";
 import OrderRow from "./OrderRow";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { useEffect } from "react";
+import { fetchOrderData } from "../../redux/slice/orderSlice";
 
 const headerTitles = [
   "NO.",
@@ -17,27 +20,35 @@ const headerTitles = [
   "Notes",
 ];
 const OrderTable = () => {
-  const { orders, loading } = useOrderData();
-  console.log(orders);
+  const dispatch = useDispatch();
+
+  const { data, isLoading, isSet } = useSelector(
+    (state: RootState) => state.order
+  );
+
+  useEffect(() => {
+    fetchOrderData()(dispatch, isSet);
+  }, []);
 
   return (
     <div>
       <MyTable>
         <Thead titles={headerTitles}></Thead>
         <TBody>
-          {orders.map((order, index) => (
+          {data.map((order, index) => (
             <OrderRow key={order._id} no={index + 1} order={order}></OrderRow>
           ))}
         </TBody>
       </MyTable>
-      {loading && (
-        <div className="min-w-full mt-8 space-y-6 ">
+
+      {isLoading && (
+        <div className="min-w-full mt-8 space-y-6">
           <Skeleton active />
           <Skeleton active />
         </div>
       )}
 
-      {!loading && orders.length === 0 && (
+      {!isLoading && data.length === 0 && (
         <div className="min-w-full mt-8 text-center">No orders found.</div>
       )}
     </div>

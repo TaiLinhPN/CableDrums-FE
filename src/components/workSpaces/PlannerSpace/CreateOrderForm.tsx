@@ -1,7 +1,7 @@
 import { Button,  } from "antd";
 import { Contract,  } from "../../../hooks/useContractData";
 import { useEffect, useState } from "react";
-import { useAccountsData } from "../../../hooks/useAccountsData";
+// import { useAccountsData } from "../../../hooks/useAccountsData";
 import { createOrderApi } from "../../../api/orderApi";
 import { messageSuccess } from "../../../utils/notify";
 
@@ -10,14 +10,14 @@ interface CreateOrderFormProps {
   contract: Contract;
 }
 const CreateOrderForm = ({ setModel, contract }: CreateOrderFormProps) => {
-  const { accounts } = useAccountsData();
+  // const { accounts } = useAccountsData();
   console.log(contract);
 const [isButtonDisabled, setButtonDisabled] = useState(true);
   const [selectedContractor, setSelectedContractor] = useState("");
   const [selectedNumber, setSelectedNumber] = useState("");
-  const projectContractors = accounts.filter(
-    (user) => user.userType === "projectContractor"
-  );
+  // const projectContractors = accounts.filter(
+  //   (user) => user.userType === "projectContractor"
+  // );
 
   const availableCable =
     (contract.cableDrumCount as number) -
@@ -53,11 +53,11 @@ const [isButtonDisabled, setButtonDisabled] = useState(true);
           className="block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
         >
           <option value="">Select a contractor</option>
-          {projectContractors.map((contractor) => (
+          {/* {projectContractors.map((contractor) => (
             <option key={contractor._id} value={contractor._id}>
               {contractor.username}
             </option>
-          ))}
+          ))} */}
         </select>
       </div>
 

@@ -4,12 +4,14 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authSlice from "./slice/authSlice";
 import userSlice from "./slice/useSlice";
-import dataSlice from "./slice/dataSlice";
+import orderSlice from "./slice/orderSlice";
+import accountSlice from "./slice/accountSlice";
 
 const reducer = combineReducers({
   auth: authSlice.reducer,
   user: userSlice.reducer,
-  data: dataSlice.reducer
+  order: orderSlice.reducer,
+  account: accountSlice.reducer,
 
 });
 

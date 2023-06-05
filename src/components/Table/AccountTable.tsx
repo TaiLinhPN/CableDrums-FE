@@ -1,6 +1,5 @@
 import { Button, Modal, Skeleton } from "antd";
-import { Account, useAccountsData } from "../../hooks/useAccountsData";
-import { useState } from "react";
+import { useEffect } from "react";
 import CreateUserForm from "../User/CreateUserForm";
 import RemoveUserForm from "../User/RemoveUserForm";
 import MyTable from ".";
@@ -8,36 +7,58 @@ import Thead from "./Thead";
 import TBody from "./TBody";
 import Td from "./Td";
 import AccountRow from "./AccountRow";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import {
+  Account,
+  fetchAccountData,
+  removeAccount,
+  setNewAccount,
+  setOpenModalCreate,
+  setOpenModalRemove,
+  setReadyToRemoveAccount,
+} from "../../redux/slice/accountSlice";
+import { socket } from "../../utils/socket";
 
 const headerTitles = ["NO.", "Username", "Email", "User Type", "Handle"];
 
 const AccountTable = () => {
-  const { accounts } = useAccountsData();
-  const [user, setUser] = useState<Account>({
-    _id: "",
-    username: "",
-    userType: "",
-    email: "",
-  });
-  const [openModalCreate, setOpenModalCreate] = useState(false);
-  const [openModalRemove, setOpenModalRemove] = useState(false);
+  const dispatch = useDispatch();
+  const { accounts, isLoading, isSet, isOpenModalCreate, isOpenModalRemove } =
+    useSelector((state: RootState) => state.account);
+
+  useEffect(() => {
+    fetchAccountData()(dispatch, isSet);
+  }, []);
+
   const handleDelete = (id: string) => {
     const user = accounts.find((acc: Account) => acc._id === id);
-    setUser(user as Account);
-
-    setOpenModalRemove(!openModalRemove);
+    dispatch(setReadyToRemoveAccount(user));
+    dispatch(setOpenModalRemove(true));
   };
+
+  useEffect(() => {
+    socket.on("new-account", (data: Account) => {
+      dispatch(setNewAccount(data));
+    });
+
+    socket.on("remove-account", (userId) => {
+      dispatch(removeAccount(userId));
+    });
+  }, []);
 
   return (
     <div>
       <div>
-        <Button onClick={() => setOpenModalCreate(true)}>Create</Button>
+        <Button onClick={() => dispatch(setOpenModalCreate(true))}>
+          Create
+        </Button>
 
         <MyTable>
           <Thead titles={headerTitles}></Thead>
           <TBody>
-            {accounts.map((account, index) => (
-              <AccountRow no={index} account={account}>
+            {accounts?.map((account, index) => (
+              <AccountRow key={account._id} no={index + 1} account={account}>
                 <Td>
                   <button
                     onClick={() => handleDelete(account._id)}
@@ -50,32 +71,37 @@ const AccountTable = () => {
             ))}
           </TBody>
         </MyTable>
-        {accounts.length === 0 && (
-          <div className="mt-8 ">
+        {isLoading && (
+          <div className="min-w-full mt-8 space-y-6">
+            <Skeleton active />
             <Skeleton active />
           </div>
         )}
+
+        {!isLoading && accounts.length === 0 && (
+          <div className="min-w-full mt-8 text-center">No orders found.</div>
+        )}
       </div>
 
-      {
+      {isOpenModalCreate && (
         <Modal
           centered
-          open={openModalCreate}
-          onCancel={() => setOpenModalCreate(false)}
+          open={isOpenModalCreate}
+          onCancel={() => dispatch(setOpenModalCreate(false))}
           width={400}
         >
-          <CreateUserForm setModel={setOpenModalCreate} />
+          <CreateUserForm />
         </Modal>
-      }
+      )}
 
-      {openModalRemove && (
+      {isOpenModalRemove && (
         <Modal
           centered
-          open={openModalRemove}
-          onCancel={() => setOpenModalRemove(false)}
+          open={isOpenModalRemove}
+          onCancel={() => dispatch(setOpenModalRemove(false))}
           width={300}
         >
-          <RemoveUserForm setModel={setOpenModalRemove} user={user} />
+          <RemoveUserForm />
         </Modal>
       )}
     </div>

@@ -2,11 +2,11 @@ import { useRef } from "react";
 import { CreateUserApi, UserType } from "../../api/userApi";
 import { messageErrorLog } from "../../utils/notify";
 import { createUser } from "../../helpers/userHelper";
+import { useDispatch } from "react-redux";
+import { setOpenModalCreate } from "../../redux/slice/accountSlice";
 
-interface CreateUserFormProps {
-  setModel: (isOpen: boolean) => void;
-}
-const CreateUserForm = ({ setModel }: CreateUserFormProps) => {
+const CreateUserForm = () => {
+  const dispatch = useDispatch();
   const usernameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const userTypeRef = useRef<HTMLSelectElement>(null);
@@ -27,7 +27,7 @@ const CreateUserForm = ({ setModel }: CreateUserFormProps) => {
       };
       const newUser = await createUser(user);
       if (newUser) {
-        setModel(false);
+        dispatch(setOpenModalCreate(false));
         usernameRef.current.value = "";
         emailRef.current.value = "";
         userTypeRef.current.value = "";
