@@ -26,7 +26,7 @@ const OrderTable = () => {
         <Thead titles={headerTitles}></Thead>
         <TBody>
           {orders.map((order, index) => (
-            <OrderRow no={index + 1} order={order}></OrderRow>
+            <OrderRow key={order._id} no={index + 1} order={order}></OrderRow>
           ))}
         </TBody>
       </MyTable>

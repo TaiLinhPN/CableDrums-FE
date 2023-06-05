@@ -3,8 +3,10 @@ import SideBar from "../../SideBar";
 import ContractTable from "../../Table/ContractTable";
 import OrderTable from "../../Table/OrderTable";
 
+
 const PlannerSpace = () => {
   const [selectedTable, setSelectedTable] = useState(1);
+
   const handleButtonClick = (tableNumber: number) => {
     setSelectedTable(tableNumber);
   };
@@ -32,10 +34,17 @@ const PlannerSpace = () => {
           </button>
         </div>
       </SideBar>
-      <div className="container mx-auto p-4">
-        {selectedTable === 1 && <ContractTable />}
-        {selectedTable === 2 && <OrderTable />}
+      <div className="w-full">
+        {/* <div className="h-24 bg-neutral-400 flex items-center px-10">
+          <Button onClick={() => setOpenModalCreate(true)}>Create Order</Button>
+        </div> */}
+        <div className="  p-4">
+          {selectedTable === 1 && <ContractTable />}
+          {selectedTable === 2 && <OrderTable />}
+        </div>
       </div>
+
+
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Skeleton } from "antd";
+import {  Skeleton } from "antd";
 import { useContractData } from "../../hooks/useContractData";
 import MyTable from ".";
 import Thead from "./Thead";
@@ -24,11 +24,8 @@ const ContractTable = () => {
         <Thead titles={headerTitles}></Thead>
         <TBody>
           {contracts.map((contract, index) => (
-            <ContractRow
-              key={contract._id}
-              no={index + 1}
-              contract={contract}
-            ></ContractRow>
+            <ContractRow key={contract._id} no={index + 1} contract={contract}>
+            </ContractRow>
           ))}
         </TBody>
       </MyTable>
