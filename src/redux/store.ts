@@ -6,13 +6,14 @@ import authSlice from "./slice/authSlice";
 import userSlice from "./slice/useSlice";
 import orderSlice from "./slice/orderSlice";
 import accountSlice from "./slice/accountSlice";
+import contractSlice from "./slice/ContractSlice";
 
 const reducer = combineReducers({
   auth: authSlice.reducer,
   user: userSlice.reducer,
   order: orderSlice.reducer,
   account: accountSlice.reducer,
-
+  contract: contractSlice.reducer,
 });
 
 const persistConfig = {

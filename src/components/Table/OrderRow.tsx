@@ -12,7 +12,7 @@ interface OrderRowProps {
   no: number;
 }
 const OrderRow = ({ order, no }: OrderRowProps) => {
-  const userType = useSelector((state: RootState) => state.user.userType);
+  const { userType, userId } = useSelector((state: RootState) => state.user);
   const [showAllNotes, setShowAllNotes] = useState(false);
   const [buttonLabel, setButtonLabel] = useState("Waiting");
 
@@ -67,9 +67,9 @@ const OrderRow = ({ order, no }: OrderRowProps) => {
       <Td>
         {notesToShow.map((note, index) => (
           <div key={index} className="text-left  border-b">
-            <p>Updater: {note.username}</p>
+            <p>{note.username}</p>
             <p>Time: {note.time}</p>
-            {note.message && <p>Message: {note.message}</p>}
+            {note.message && <p>Note: {note.message}</p>}
           </div>
         ))}
 
@@ -82,10 +82,20 @@ const OrderRow = ({ order, no }: OrderRowProps) => {
 
       <Td>
         {userType === "supplyVendor" && (
-          <Button onClick={handleUpdate}>{buttonLabel}</Button>
+          <Button
+            disabled={order.supplyVendor._id !== userId}
+            onClick={handleUpdate}
+          >
+            {buttonLabel}
+          </Button>
         )}
         {userType === "projectContractor" && (
-          <Button onClick={handleUpdate}>{buttonLabel}</Button>
+          <Button
+            disabled={order.projectContractor._id !== userId}
+            onClick={handleUpdate}
+          >
+            {buttonLabel}
+          </Button>
         )}
       </Td>
     </tr>

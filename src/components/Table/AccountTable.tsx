@@ -12,13 +12,10 @@ import { RootState } from "../../redux/store";
 import {
   Account,
   fetchAccountData,
-  removeAccount,
-  setNewAccount,
   setOpenModalCreate,
   setOpenModalRemove,
   setReadyToRemoveAccount,
 } from "../../redux/slice/accountSlice";
-import { socket } from "../../utils/socket";
 
 const headerTitles = ["NO.", "Username", "Email", "User Type", "Handle"];
 
@@ -36,16 +33,6 @@ const AccountTable = () => {
     dispatch(setReadyToRemoveAccount(user));
     dispatch(setOpenModalRemove(true));
   };
-
-  useEffect(() => {
-    socket.on("new-account", (data: Account) => {
-      dispatch(setNewAccount(data));
-    });
-
-    socket.on("remove-account", (userId) => {
-      dispatch(removeAccount(userId));
-    });
-  }, []);
 
   return (
     <div>

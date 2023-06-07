@@ -22,7 +22,7 @@ const headerTitles = [
 const OrderTable = () => {
   const dispatch = useDispatch();
 
-  const { data, isLoading, isSet } = useSelector(
+  const { orders, isLoading, isSet } = useSelector(
     (state: RootState) => state.order
   );
 
@@ -35,7 +35,7 @@ const OrderTable = () => {
       <MyTable>
         <Thead titles={headerTitles}></Thead>
         <TBody>
-          {data.map((order, index) => (
+          {orders.map((order, index) => (
             <OrderRow key={order._id} no={index + 1} order={order}></OrderRow>
           ))}
         </TBody>
@@ -48,7 +48,7 @@ const OrderTable = () => {
         </div>
       )}
 
-      {!isLoading && data.length === 0 && (
+      {!isLoading && orders.length === 0 && (
         <div className="min-w-full mt-8 text-center">No orders found.</div>
       )}
     </div>

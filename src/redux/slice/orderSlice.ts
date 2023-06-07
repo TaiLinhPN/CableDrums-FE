@@ -27,7 +27,7 @@ export interface Order {
 }
 
 const initialState = {
-  data: [] as Order[],
+  orders: [] as Order[],
   isLoading: false,
   isSet: false,
 };
@@ -37,7 +37,7 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     setOrderData: (state, action) => {
-      state.data = action.payload;
+      state.orders = action.payload;
     },
     setLoading: (state, action) => {
       state.isLoading = action.payload;
@@ -45,15 +45,23 @@ const orderSlice = createSlice({
     setSet: (state, action) => {
       state.isSet = action.payload;
     },
+    setNewOrder: (state, action) => {
+      state.orders = [action.payload, ...state.orders];
+    },
+
+    updateOrder: (state, action) => {
+       state.orders= action.payload; //fix
+    },
   },
 });
 
-export const { setOrderData, setLoading, setSet } = orderSlice.actions;
+export const { setOrderData, setLoading, setSet, setNewOrder, updateOrder } =
+  orderSlice.actions;
 export default orderSlice;
 
 export const fetchOrderData =
   () => async (dispatch: Dispatch, isSet: boolean) => {
-      if (!isSet) {
+    if (!isSet) {
       dispatch(setLoading(true));
       const response = await getAllOrderApi();
       if (response.status === 201) {

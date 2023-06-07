@@ -1,10 +1,13 @@
 import { ReactNode, useState } from "react";
-import { Contract } from "../../hooks/useContractData";
 import Td from "./Td";
 import { Button, Modal } from "antd";
 import CreateOrderForm from "../workSpaces/PlannerSpace/CreateOrderForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import {
+  Contract,
+  setContractToCreateOrder,
+} from "../../redux/slice/ContractSlice";
 
 interface AccountRowProps {
   children?: ReactNode;
@@ -12,12 +15,17 @@ interface AccountRowProps {
   no: number;
 }
 const ContractRow = ({ contract, no, children }: AccountRowProps) => {
+  const dispatch = useDispatch();
   const userType = useSelector((state: RootState) => state.user.userType);
   const [openModalCreate, setOpenModalCreate] = useState(false);
+
+  const handleCreateOrder = () => {
+    dispatch(setContractToCreateOrder(contract));
+    setOpenModalCreate(true);
+  };
   return (
     <tr className="hover:bg-gray-100">
       <Td>{no}</Td>
-      {/* <Td>{contract._id}</Td> */}
       <Td>{contract.supplyVendor.username}</Td>
       <Td>{contract.cableDrumCount}</Td>
       <Td>{contract.cableDelivered}</Td>
@@ -26,7 +34,15 @@ const ContractRow = ({ contract, no, children }: AccountRowProps) => {
       <Td>{contract.expireAt}</Td>
       <Td>
         {userType === "planner" && (
-          <Button onClick={() => setOpenModalCreate(true)}>create order</Button>
+          <Button
+            disabled={
+              contract.cableDrumCount <=
+              contract.cableDelivered + contract.cableRequired
+            }
+            onClick={handleCreateOrder}
+          >
+            create order
+          </Button>
         )}
 
         {/* <Button>Contract Details</Button> */}
@@ -40,7 +56,7 @@ const ContractRow = ({ contract, no, children }: AccountRowProps) => {
           onCancel={() => setOpenModalCreate(false)}
           width={300}
         >
-          <CreateOrderForm contract={contract} setModel={setOpenModalCreate} />
+          <CreateOrderForm setModel={setOpenModalCreate} />
         </Modal>
       )}
     </tr>
