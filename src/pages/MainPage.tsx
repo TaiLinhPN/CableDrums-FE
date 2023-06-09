@@ -18,6 +18,7 @@ import {
   removeContract,
   setNewContract,
   updateContractWhenNewOrder,
+  updateContractWhenOrderCompleted,
 } from "../redux/slice/ContractSlice";
 import { Order, setNewOrder, updateOrder } from "../redux/slice/orderSlice";
 import { messageWaning } from "../utils/notify";
@@ -40,15 +41,31 @@ const MainPage = () => {
   // listen to the event of contract
   useEffect(() => {
     socket.on("new-contract", (data: Contract) => {
-      console.log(data);
-      dispatch(setNewContract(data));
+      if (userType === "admin" || userType === "planner") {
+        dispatch(setNewContract(data));
+      } else if (
+        userType === "supplyVendor" &&
+        data.supplyVendor._id === userId
+      ) {
+        dispatch(setNewContract(data));
+        messageWaning("New Contract was created");
+      }
     });
 
     socket.on("update-contract-new-order", (data: Contract) => {
-      console.log(data);
       dispatch(
         updateContractWhenNewOrder({
           contractId: data._id,
+          cableRequired: data.cableRequired,
+        })
+      );
+    });
+
+    socket.on("update-contract-complete-order", (data: Contract) => {
+      dispatch(
+        updateContractWhenOrderCompleted({
+          contractId: data._id,
+          cableDelivered: data.cableDelivered,
           cableRequired: data.cableRequired,
         })
       );
@@ -61,21 +78,40 @@ const MainPage = () => {
 
   // listen to the event of order
   useEffect(() => {
-    socket.on("new-order", (data: Order) => {     
-    if (
-
-      userType === "admin" ||
-      userType === "planner"
-    ) {
-      dispatch(setNewOrder(data));
-    }else if (      (userType === "supplyVendor" && data.supplyVendor._id === userId )||
-      (userType === "projectContractor" && data.projectContractor._id === userId)) {
-      dispatch(setNewOrder(data));
-      messageWaning("New Order was created")
+    socket.on("new-order", (data: Order) => {
+      if (userType === "admin" || userType === "planner") {
+        dispatch(setNewOrder(data));
+      } else if (
+        (userType === "supplyVendor" && data.supplyVendor._id === userId) ||
+        (userType === "projectContractor" &&
+          data.projectContractor._id === userId)
+      ) {
+        dispatch(setNewOrder(data));
+        messageWaning("New Order was created");
       }
     });
     socket.on("update-order", (data: Order) => {
-      dispatch(updateOrder(data));
+      if (userType === "planner") {
+        messageWaning("An Order was updated ");
+        dispatch(updateOrder(data));
+      } else if (userType === "supplyVendor") {
+        if (data.supplyVendor._id === userId) {
+          dispatch(updateOrder(data));
+          if (data.status !== "readyForPickup") {
+            messageWaning("An Order was updated ");
+          }
+        }
+      } else if (userType === "projectContractor") {
+        console.log("projectContractor");
+        console.log(data.projectContractor._id);
+
+        if (data.projectContractor._id === userId) {
+          dispatch(updateOrder(data));
+          if (data.status !== "completed") {
+            messageWaning("An Order was updated ");
+          }
+        }
+      }
     });
   }, []);
 

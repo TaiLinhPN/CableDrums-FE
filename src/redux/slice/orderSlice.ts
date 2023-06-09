@@ -50,7 +50,12 @@ const orderSlice = createSlice({
     },
 
     updateOrder: (state, action) => {
-       state.orders= action.payload; //fix
+       const indexToUpdate = state.orders.findIndex(
+         (obj) => obj._id === action.payload._id
+       );
+       if (indexToUpdate !== -1) {
+         state.orders[indexToUpdate] = action.payload;
+       }
     },
   },
 });

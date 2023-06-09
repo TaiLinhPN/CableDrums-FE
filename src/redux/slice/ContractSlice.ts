@@ -47,7 +47,7 @@ const contractSlice = createSlice({
     },
     updateContractWhenNewOrder: (state, action) => {
       const { contractId, cableRequired } = action.payload;
-      
+
       const contractIndex = state.contracts.findIndex(
         (contract) => contract._id === contractId
       );
@@ -55,6 +55,22 @@ const contractSlice = createSlice({
       if (contractIndex !== -1) {
         state.contracts[contractIndex] = {
           ...state.contracts[contractIndex],
+          cableRequired,
+        };
+      }
+    },
+    updateContractWhenOrderCompleted: (state, action) => {
+      const { contractId, cableDelivered, cableRequired } = action.payload;
+      console.log(contractId, cableDelivered, cableRequired);
+
+      const contractIndex = state.contracts.findIndex(
+        (contract) => contract._id === contractId
+      );
+
+      if (contractIndex !== -1) {
+        state.contracts[contractIndex] = {
+          ...state.contracts[contractIndex],
+          cableDelivered,
           cableRequired,
         };
       }
@@ -70,6 +86,7 @@ export const {
   removeContract,
   setContractToCreateOrder,
   updateContractWhenNewOrder,
+  updateContractWhenOrderCompleted,
 } = contractSlice.actions;
 export default contractSlice;
 

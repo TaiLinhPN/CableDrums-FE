@@ -36,8 +36,7 @@ function App() {
     <div>
       <ToastContainer theme="dark" />
         <RouterApp />
-      {/* <ParentComponent/> */}
-    </div>
+     </div>
   );
 }
 

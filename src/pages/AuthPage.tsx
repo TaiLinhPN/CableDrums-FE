@@ -2,11 +2,19 @@ import "../assets/css/authStyle.css";
 import ResetPasswordForm from "../components/Auth/ResetPasswordForm";
 import LoginForm from "../components/Auth/LoginForm";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { Navigate } from "react-router-dom";
 
 const AuthPage = () => {
-  const [isOpenLogin, setOpenLogin] = useState(true)
+  const  state = useSelector((state: RootState) => state);
+  const [isOpenLogin, setOpenLogin] = useState(true);
   return (
     <div className="login-body">
+      {state.auth.stateAuth === "isLogin" && state.user.userId !== "" && (
+        <Navigate to="/"></Navigate>
+      )}
+
       <p className="company-name">
         <span>EnergySure tech</span> Energy Corporation
       </p>

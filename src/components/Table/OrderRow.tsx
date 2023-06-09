@@ -12,21 +12,34 @@ interface OrderRowProps {
   no: number;
 }
 const OrderRow = ({ order, no }: OrderRowProps) => {
-  const { userType, userId } = useSelector((state: RootState) => state.user);
+  const { userType } = useSelector((state: RootState) => state.user);
+  const {orders } = useSelector((state: RootState) => state.order);
+  const [isLoading, setLoading] = useState(false);
   const [showAllNotes, setShowAllNotes] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
   const [buttonLabel, setButtonLabel] = useState("Waiting");
 
   useEffect(() => {
     if (order.status === "completed") {
       setButtonLabel("Done");
-    }
-    if (userType === "supplyVendor" && order.status === "newRequest") {
-      setButtonLabel("Ready to Collect");
-    }
-    if (userType === "projectContractor" && order.status === "readyForPickup") {
+      setIsDisabled(true);
+    } else if (userType === "supplyVendor") {
+      if (order.status === "newRequest") {
+              setButtonLabel("Ready to Collect");
+              setIsDisabled(false);
+      } else {
+        setButtonLabel("Waiting");
+        setIsDisabled(true);
+      }
+
+    } else if (
+      userType === "projectContractor" &&
+      order.status === "readyForPickup"
+    ) {
       setButtonLabel("Completed");
+      setIsDisabled(false);
     }
-  }, []);
+  }, [orders]);
 
   const toggleShowAllNotes = () => {
     setShowAllNotes(!showAllNotes);
@@ -38,14 +51,19 @@ const OrderRow = ({ order, no }: OrderRowProps) => {
       statusToUpdate = "readyForPickup";
     }
     try {
+      setLoading(true)
       const response = await updateOrderApi(
         { status: statusToUpdate },
         order._id
       );
       if (response.status === 200) {
         messageSuccess("Updated order successfully");
+        setIsDisabled(true);
+        setLoading(false);
       }
     } catch (error) {
+       setIsDisabled(false);
+       setLoading(true);
       messageError(error);
     }
   };
@@ -81,17 +99,10 @@ const OrderRow = ({ order, no }: OrderRowProps) => {
       </Td>
 
       <Td>
-        {userType === "supplyVendor" && (
+        {(userType === "supplyVendor" || userType === "projectContractor") && (
           <Button
-            disabled={order.supplyVendor._id !== userId}
-            onClick={handleUpdate}
-          >
-            {buttonLabel}
-          </Button>
-        )}
-        {userType === "projectContractor" && (
-          <Button
-            disabled={order.projectContractor._id !== userId}
+            disabled={isDisabled}
+            loading={isLoading}
             onClick={handleUpdate}
           >
             {buttonLabel}
