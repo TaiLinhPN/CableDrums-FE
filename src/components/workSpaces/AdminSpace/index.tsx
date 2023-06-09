@@ -3,7 +3,7 @@ import SideBar from "../../SideBar";
 import { Link, Outlet } from "react-router-dom";
 
 const AdminSpace = () => {
-  const [selectedTable, setSelectedTable] = useState(1);
+  const [selectedTable, setSelectedTable] = useState(0);
 
   const handleButtonClick = (tableNumber: number) => {
     setSelectedTable(tableNumber);

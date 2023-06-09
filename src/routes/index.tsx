@@ -9,6 +9,7 @@ import AccountTable from "../components/Table/AccountTable";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import NotFoundPage from "../pages/NotFoundPage";
+import WelcomePage from "../pages/WelcomePage";
 
 const RouterApp = () => {
   const { userType } = useSelector((state: RootState) => state.user);
@@ -19,6 +20,7 @@ const RouterApp = () => {
         <Route element={<PrivateRoute />}>
           <Route element={<MainLayout />}>
             <Route path="" element={<MainPage />}>
+              <Route path="/" element={<WelcomePage />} />
               {userType === "admin" && (
                 <>
                   <Route path="/order" element={<OrderTable />} />
