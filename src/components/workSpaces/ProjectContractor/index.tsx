@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SideBar from "../../SideBar";
-import OrderTable from "../../Table/OrderTable";
+import { Link, Outlet } from "react-router-dom";
 
 const ProjectContractorSpace = () => {
   const [selectedTable, setSelectedTable] = useState(1);
@@ -12,18 +12,19 @@ const ProjectContractorSpace = () => {
     <div className="flex flex-grow">
       <SideBar>
         <div className="flex flex-col">
-          <button
-            onClick={() => handleButtonClick(2)}
+          <Link
+            to="order"
+            onClick={() => handleButtonClick(1)}
             className={`${
               selectedTable === 1 ? "bg-stone-500 text-white" : "bg-gray-200"
             } px-4 py-2 `}
           >
             Order
-          </button>
+          </Link>
         </div>
       </SideBar>
       <div className="container mx-auto p-4">
-        {selectedTable === 1 && <OrderTable />}
+        <Outlet />
       </div>
     </div>
   );
