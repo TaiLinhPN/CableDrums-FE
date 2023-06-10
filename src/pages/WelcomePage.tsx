@@ -12,7 +12,7 @@ const WelcomePage = () => {
         </p>
         <p className="text-xl">Welcome back!</p>
       </div>
-      <img className="w-1/3" src="../../public/theMen.png" alt="" />
+      <img className="w-1/3" src="../../theMen.png" alt="" />
       <p>select a table in the left side to start working</p>
     </div>
   );

@@ -1,16 +1,20 @@
 import MyButton from "../../components/MyButton";
 import { AiOutlineLogout } from "react-icons/ai";
-
-import { logout } from "../../redux/slice/authSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-
-
+import { clearAllStorage } from "../../utils/storage";
+import { useNavigate } from "react-router-dom";
 
 function Nav() {
-  const dispatch = useDispatch()
   const user = useSelector((state: RootState) => state.user);
+  const navigate = useNavigate();
   
+  const handleLogOut = () => {
+    navigate("/login");
+    clearAllStorage();
+    window.location.reload();
+  };
+
   return (
     <nav
       className={`flex justify-end  items-center  text-white py-2 space-x-4 px-8`}
@@ -22,7 +26,7 @@ function Nav() {
       <MyButton
         theme="primary"
         label={<AiOutlineLogout size={"1.5em"} />}
-        func={()=>logout()(dispatch)}
+        func={handleLogOut}
       />
     </nav>
   );

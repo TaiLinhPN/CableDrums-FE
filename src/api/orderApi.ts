@@ -1,4 +1,5 @@
-import api, { apiConfig } from "./api";
+import { apiConfig } from "./api";
+import { api } from "./interceptors";
 
 const GET_ALL_ORDER_URL = "/api/order/get-all";
 const CREATE_ORDER_URL = "/api/order/create";

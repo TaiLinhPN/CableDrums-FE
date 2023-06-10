@@ -1,4 +1,5 @@
-import api, { apiConfig } from "./api";
+import { apiConfig } from "./api";
+import { api } from "./interceptors";
 
 const LOGIN_URL = "/api/auth/login";
 const CHECK_LOGIN_API = "/api/auth/check-login";

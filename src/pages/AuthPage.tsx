@@ -14,7 +14,6 @@ const AuthPage = () => {
       {state.auth.stateAuth === "isLogin" && state.user.userId !== "" && (
         <Navigate to="/"></Navigate>
       )}
-
       <p className="company-name">
         <span>EnergySure tech</span> Energy Corporation
       </p>

@@ -1,5 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { getAccessToken, setAccessToken } from "../utils/storage";
+import { AxiosRequestConfig } from "axios";
 
 interface ApiConfig extends AxiosRequestConfig {
   baseURL: string;
@@ -13,29 +12,27 @@ export const apiConfig: ApiConfig = {
   timeout: 10000,
 };
 
-const api = axios.create(apiConfig);
+// const api = axios.create(apiConfig);
 
-api.interceptors.request.use(async (config) => {
-  const accessToken = getAccessToken();
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
-  return config;
-});
+// api.interceptors.request.use(async (config) => {
+//   const accessToken = getAccessToken();
+//   if (accessToken) {
+//     config.headers.Authorization = `Bearer ${accessToken}`;
+//   }
+//   return config;
+// });
 
-api.interceptors.response.use(
-  async (response: AxiosResponse) => {
-    const { data } = response.data;
-    
-    if (data?.token) setAccessToken(data.token.accessToken);
-    return response;
-  },
-  async (error) => {
-    if (error.response && error.response.status === 403) {
-      window.location.href = "/login";
-    }
-    throw error;
-  }
-);
+// api.interceptors.response.use(
+//    (response: AxiosResponse) => {
+//     return response;
+//   },
+//   async (error) => {
+//     if (error.response && error.response.status === 403) {
+//       window.location.href = "/login";
+//     }
+//     throw error;
+//   }
+// );
 
-export default api;
+// export default api;
+

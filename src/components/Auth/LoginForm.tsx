@@ -1,6 +1,6 @@
 import { Form, Input } from "antd";
 import { useState } from "react";
-import { setStateAuth } from "../../redux/slice/authSlice";
+import { setEmail, setStateAuth } from "../../redux/slice/authSlice";
 import { useDispatch } from "react-redux";
 import { loginApi } from "../../api/authApi";
 import { socket } from "../../utils/socket";
@@ -11,6 +11,7 @@ import {
 } from "../../utils/notify";
 import { useNavigate } from "react-router-dom";
 import { setUserReducer } from "../../redux/slice/useSlice";
+import { setAccessToken } from "../../utils/storage";
 
 interface LoginFormProps {
   setOpenLogin: (x: boolean) => void;
@@ -29,6 +30,7 @@ const LoginForm = ({ setOpenLogin }: LoginFormProps) => {
       console.log(response.status);
 
       if (response.status === 200) {
+        setAccessToken(data.token.accessToken);
         dispatch(setStateAuth("isLogin"));
         dispatch(setUserReducer(data.user));
         Navigate("/");
@@ -37,12 +39,13 @@ const LoginForm = ({ setOpenLogin }: LoginFormProps) => {
       }
     } catch (error: any) {
       if (error.response.status === 400) {
-        dispatch(setStateAuth("isResetPassword"));
+        dispatch(setEmail(userLogin.email));
         messageWaning("You must reset password for the first login");
-        setOpenLogin(false)
+        setOpenLogin(false);
+      } else {
+        console.log("Error login:", error);
+        messageError(error);
       }
-      console.log("Error login:", error);
-      messageError(error);
     }
   };
 

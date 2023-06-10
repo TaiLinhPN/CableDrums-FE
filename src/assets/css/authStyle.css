@@ -13,7 +13,7 @@
   height: 100vh;
 
   min-height: 100vh;
-  background-image: url("../../../public/hinhnen.jpg");
+  background-image: url("../../hinhnen.jpg");
   background-position-y: center;
   background-repeat: no-repeat;
   background-size: cover;

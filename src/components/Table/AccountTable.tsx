@@ -1,7 +1,7 @@
 import { Button, Modal, Skeleton } from "antd";
 import { useEffect } from "react";
-import CreateUserForm from "../User/CreateUserForm";
-import RemoveUserForm from "../User/RemoveUserForm";
+import CreateUserForm from "../Form/CreateUserForm";
+import RemoveUserForm from "../Form/RemoveUserForm";
 import MyTable from ".";
 import Thead from "./Thead";
 import TBody from "./TBody";

@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { clearAllStorage } from "../../utils/storage";
-
 
 interface InitialState {
   stateAuth: StateAuth;
+  emailResetPassword: string
 }
-export type StateAuth = "isLogin" | "isLogout" | "isResetPassword";
+export type StateAuth = "isLogin" | "isLogout" 
 
 const initialState: InitialState = {
   stateAuth: "isLogout",
+  emailResetPassword: ""
 };
 const authSlice = createSlice({
   name: "auth",
@@ -17,18 +17,12 @@ const authSlice = createSlice({
     setStateAuth: (state, action) => {
       state.stateAuth = action.payload;
     },
+    setEmail: (state, action) => {
+      state.emailResetPassword = action.payload;
+    },
   },
 });
 
-export const { setStateAuth } = authSlice.actions;
+export const { setStateAuth, setEmail } = authSlice.actions;
 
-export const logout = () => async (dispatch: Function) => {
-  clearAllStorage();
-  dispatch(setStateAuth("isLogout"));
-  // window.location.reload();
-};
-
-export const resetPassword = () => async (dispatch: Function) => {
-  dispatch(setStateAuth("isLogout"));
-};
 export default authSlice;

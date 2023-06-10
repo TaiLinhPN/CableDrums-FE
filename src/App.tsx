@@ -5,6 +5,7 @@ import { messageSuccess } from "./utils/notify";
 import { socket } from "./utils/socket";
 import { ToastContainer } from "react-toastify";
 import RouterApp from "./routes";
+import Interceptors from "./api/interceptors";
 
 function App() {
   useEffect(() => {
@@ -35,9 +36,9 @@ function App() {
   return (
     <div>
       <ToastContainer theme="dark" />
-        <RouterApp />
-     </div>
+      <RouterApp />
+      <Interceptors/>
+    </div>
   );
 }
-
 export default App;

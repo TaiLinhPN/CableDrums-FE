@@ -1,10 +1,10 @@
 import { Button } from "antd";
 import { useEffect, useState } from "react";
-import { createOrderApi } from "../../../api/orderApi";
-import { messageSuccess } from "../../../utils/notify";
+import { createOrderApi } from "../../api/orderApi";
+import { messageSuccess } from "../../utils/notify";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
-import { fetchAccountData } from "../../../redux/slice/accountSlice";
+import { RootState } from "../../redux/store";
+import { fetchAccountData } from "../../redux/slice/accountSlice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 

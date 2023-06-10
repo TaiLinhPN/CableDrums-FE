@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 import Td from "./Td";
 import { Button, Modal } from "antd";
-import CreateOrderForm from "../workSpaces/PlannerSpace/CreateOrderForm";
+import CreateOrderForm from "../Form/CreateOrderForm";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import {
