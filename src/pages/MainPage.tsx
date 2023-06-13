@@ -1,12 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import AdminSpace from "../components/workSpaces/AdminSpace";
 import { RootState } from "../redux/store";
-import PlannerSpace from "../components/workSpaces/PlannerSpace";
-import ProjectContractorSpace from "../components/workSpaces/ProjectContractor";
-import SupplyVendorSpace from "../components/workSpaces/SupplyVendor";
-import { Spin } from "antd";
-import { Navigate } from "react-router-dom";
-import { useEffect } from "react";
+import { Link, Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { socket } from "../utils/socket";
 import {
   Account,
@@ -22,11 +17,20 @@ import {
 } from "../redux/slice/ContractSlice";
 import { Order, setNewOrder, updateOrder } from "../redux/slice/orderSlice";
 import { messageWaning } from "../utils/notify";
+import NotFoundAccountPage from "./NotFoundAccountPage";
+import SideBar from "../components/SideBar";
+import { FaFileContract } from "react-icons/fa";
+import { BiFoodMenu } from "react-icons/bi";
+import { MdSwitchAccount } from "react-icons/md";
 
 const MainPage = () => {
   const dispatch = useDispatch();
   const { userId, userType } = useSelector((state: RootState) => state.user);
+  const [selectedTable, setSelectedTable] = useState(0);
 
+  const handleButtonClick = (tableNumber: number) => {
+    setSelectedTable(tableNumber);
+  };
   // listen to the event of account
   useEffect(() => {
     socket.on("new-account", (data: Account) => {
@@ -115,28 +119,75 @@ const MainPage = () => {
     });
   }, []);
 
-  switch (userType) {
-    case "admin":
-      return <AdminSpace />;
-
-    case "planner":
-      return <PlannerSpace />;
-
-    case "supplyVendor":
-      return <SupplyVendorSpace />;
-
-    case "projectContractor":
-      return <ProjectContractorSpace />;
-
-    default:
-      return (
-        <div className="flex flex-col  items-center">
-          <Spin tip="Loading" size="large"></Spin>
-          <div>User not found</div>
-          <Navigate to="/login" />
-        </div>
-      );
+  const userTypeArr = ["admin", "planner", "supplyVendor", "projectContractor"];
+  if (!userId || !userTypeArr.includes(userType)) {
+    return <NotFoundAccountPage />;
   }
+
+  const links = [
+    {
+      to: "account",
+      onClick: () => handleButtonClick(1),
+      text: "Account",
+      icon: <MdSwitchAccount size={"1.5em"} />,
+      isSelected: selectedTable === 1,
+      allowedUserTypes: ["admin"],
+    },
+    {
+      to: "contract",
+      onClick: () => handleButtonClick(2),
+      text: "Contract",
+      icon: <FaFileContract size={"1.5em"} />,
+      isSelected: selectedTable === 2,
+      allowedUserTypes: ["admin", "planner", "supplyVendor"],
+    },
+    {
+      to: "order",
+      onClick: () => handleButtonClick(3),
+      text: "Order",
+      icon: <BiFoodMenu size={"1.5em"} />,
+      isSelected: selectedTable === 3,
+      allowedUserTypes: [
+        "admin",
+        "planner",
+        "supplyVendor",
+        "projectContractor",
+      ],
+    },
+  ];
+
+  const renderLinks = () => {
+    return links.map((link, index) => {
+      const { to, onClick, text, icon, isSelected, allowedUserTypes } = link;
+      if (allowedUserTypes.includes(userType)) {
+        return (
+          <Link
+            key={index}
+            to={to}
+            onClick={onClick}
+            className={`${
+              isSelected && " bg-yellow-red font-medium text-white"
+            } px-4 py-2 flex space-x-2`}
+          >
+            {icon}
+            <p>{text}</p>
+          </Link>
+        );
+      }
+      return null;
+    });
+  };
+
+  return (
+    <div className="flex flex-grow">
+      <SideBar>
+        <div className="flex flex-col">{renderLinks()}</div>
+      </SideBar>
+      <div className="container mx-auto p-4">
+        <Outlet />
+      </div>
+    </div>
+  );
 };
 
 export default MainPage;

@@ -11,11 +11,8 @@ const headerTitles = [
   "NO.",
   // "Contract ID",
   "Supply Vendor",
-  "Cable Drum Count",
-  "Cable Drum Delivered",
-  "Cable Drum Requested",
-  "Created at",
-  "Expires at",
+  "Count / Delivered / Requested",
+  "Created / Expires at",
 ];
 
 const ContractTable = () => {
@@ -28,7 +25,13 @@ const ContractTable = () => {
   }, []);
 
   return (
-    <div>
+    <div
+      style={{
+        maxHeight: "calc(100vh - 15vh)",
+        maxWidth: "calc(100vw - 10vw)",
+      }}
+      className=" overflow-auto overscroll-auto relative"
+    >
       <MyTable>
         <Thead titles={headerTitles}></Thead>
         <TBody>

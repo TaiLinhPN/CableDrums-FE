@@ -5,7 +5,10 @@ interface TableProps {
 }
 const MyTable = ({ children }: TableProps) => {
   return (
-    <table className="min-w-full divide-y divide-gray-200">
+    <table
+      className="bg-white rounded-lg overflow-hidden relative"
+
+    >
       {children}
     </table>
   );

@@ -31,5 +31,4 @@ const store = configureStore({
 
 export default store;
 export const persister = persistStore(store);
-
 export type RootState = ReturnType<typeof store.getState>;

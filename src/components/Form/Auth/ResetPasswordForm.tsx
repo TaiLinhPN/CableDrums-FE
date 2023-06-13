@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import { messageErrorLog } from "../../utils/notify";
-import { resetPasswordApi } from "../../api/authApi";
+import { messageErrorLog } from "../../../utils/notify";
+import { resetPasswordApi } from "../../../api/authApi";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { setEmail } from "../../redux/slice/authSlice";
+import { RootState } from "../../../redux/store";
+import { setEmail } from "../../../redux/slice/authSlice";
 
 interface ResetPasswordFormProps {
   setOpenLogin: (x: boolean) => void;
@@ -36,7 +36,7 @@ const ResetPasswordForm = ({ setOpenLogin }: ResetPasswordFormProps) => {
 
   const resetPassword = async () => {
     const resetPass = {
-      email: emailResetPassword || emailRef.current!.value ,
+      email: emailResetPassword || emailRef.current!.value,
       password: passwordRef.current!.value,
     };
     try {
@@ -44,8 +44,7 @@ const ResetPasswordForm = ({ setOpenLogin }: ResetPasswordFormProps) => {
       if (response.status === 200) {
         setOpenLogin(true);
         dispatch(setEmail(""));
-         emailRef.current!.value = "",
-        passwordRef.current!.value = "";
+        (emailRef.current!.value = ""), (passwordRef.current!.value = "");
         confirmPasswordRef.current!.value = "";
       } else if (response.status === 400) {
         messageErrorLog(response.data.message);

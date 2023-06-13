@@ -50,7 +50,7 @@ const RemoveUserForm = () => {
           <div>
             <p className="mb-2">
               To confirm, type "
-              <span className="text-amber-500">
+              <span className="text-yellow-red font-medium">
                 {readyToRemoveAccount.username}
               </span>
               " in the box below:

@@ -5,8 +5,8 @@ interface SideBarProps {
 }
 const SideBar = ({ children }: SideBarProps) => {
   return (
-    <aside className="bg-gray-200 w-64  ">
-      <div>{children}</div>
+    <aside className=" w-64 text-silver bg-[url('../../../hinhnen.jpg')] bg-[center_top] relative">
+      <div className=" bg-royal-brown opacity-80 h-full">{children}</div>
     </aside>
   );
 };

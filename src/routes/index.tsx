@@ -3,13 +3,13 @@ import PrivateRoute from "./PrivateRoute";
 import MainLayout from "../layout/MainLayout";
 import MainPage from "../pages/MainPage";
 import AuthPage from "../pages/AuthPage";
-import OrderTable from "../components/Table/OrderTable";
-import ContractTable from "../components/Table/ContractTable";
-import AccountTable from "../components/Table/AccountTable";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import NotFoundPage from "../pages/NotFoundPage";
 import WelcomePage from "../pages/WelcomePage";
+import AccountPage from "../pages/AccountPage";
+import ContractPage from "../pages/ContractPage";
+import OrderPage from "../pages/OrderPage";
 
 const RouterApp = () => {
   const { userType } = useSelector((state: RootState) => state.user);
@@ -22,20 +22,18 @@ const RouterApp = () => {
             <Route path="" element={<MainPage />}>
               <Route path="/" element={<WelcomePage />} />
               {userType === "admin" && (
-                <>
-                  <Route path="/order" element={<OrderTable />} />
-                  <Route path="/contract" element={<ContractTable />} />
-                  <Route path="/account" element={<AccountTable />} />
-                </>
+                <Route path="/account" element={<AccountPage />} />
               )}
-              {(userType === "planner" || userType === "supplyVendor") && (
-                <>
-                  <Route path="/order" element={<OrderTable />} />
-                  <Route path="/contract" element={<ContractTable />} />
-                </>
+              {(userType === "admin" ||
+                userType === "planner" ||
+                userType === "supplyVendor") && (
+                <Route path="/contract" element={<ContractPage />} />
               )}
-              {userType === "projectContractor" && (
-                <Route path="/order" element={<OrderTable />} />
+              {(userType === "admin" ||
+                userType === "planner" ||
+                userType === "supplyVendor" ||
+                userType === "projectContractor") && (
+                <Route path="/order" element={<OrderPage />} />
               )}
             </Route>
           </Route>

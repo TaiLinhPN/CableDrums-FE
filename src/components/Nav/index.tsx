@@ -1,33 +1,77 @@
-import MyButton from "../../components/MyButton";
 import { AiOutlineLogout } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { clearAllStorage } from "../../utils/storage";
-import { useNavigate } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Drawer, Space, Input } from "antd";
+import { useState } from "react";
+import { MdNotificationsActive } from "react-icons/md";
+const { Search } = Input;
 function Nav() {
   const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
-  
+
   const handleLogOut = () => {
     navigate("/login");
     clearAllStorage();
     window.location.reload();
   };
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const onSearch = (value: string) => console.log(value);
 
   return (
-    <nav
-      className={`flex justify-end  items-center  text-white py-2 space-x-4 px-8`}
-    >
-      <div className="flex  flex-col text-black text-end">
-        <p className=" font-semibold text-lg">{user.name}</p>
-        <p className=" font-thin text-xs">{user.userType}</p>
+    <nav className={`flex justify-between items-center  py-2  px-8`}>
+      <Link to="/" className="flex items-center font-semibold text-lg">
+        <img src="../../../vite.svg" alt="" className="w-6 mr-2" />
+        EnergySure tech
+      </Link>
+      <div className="flex space-x-4 items-center ">
+        <Space direction="vertical">
+          
+        <Search
+          placeholder="input search text"
+          allowClear
+          onSearch={onSearch}
+          style={{ width: 300 }}
+          // loading
+        />
+          </Space>
+
+        <div className="flex  flex-col text-black text-end">
+          <p className=" font-thin text-xs">{user.userType}</p>
+          <p className=" font-semibold text-lg">{user.name}</p>
+        </div>
+        <div className="nav-icon space-x-2">
+          <Button onClick={showDrawer}>
+            <MdNotificationsActive
+              className="hover:text-maize"
+              size={"1.5em"}
+            />
+          </Button>
+          <Button onClick={handleLogOut}>
+            <AiOutlineLogout className="hover:text-maize" size={"1.5em"} />
+          </Button>
+        </div>
       </div>
-      <MyButton
-        theme="primary"
-        label={<AiOutlineLogout size={"1.5em"} />}
-        func={handleLogOut}
-      />
+      <Drawer
+        title="Notification"
+        placement="right"
+        onClose={onClose}
+        open={open}
+      >
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Drawer>
     </nav>
   );
 }

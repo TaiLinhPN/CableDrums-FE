@@ -1,17 +1,17 @@
 import { Form, Input } from "antd";
 import { useState } from "react";
-import { setEmail, setStateAuth } from "../../redux/slice/authSlice";
+import { setEmail, setStateAuth } from "../../../redux/slice/authSlice";
 import { useDispatch } from "react-redux";
-import { loginApi } from "../../api/authApi";
-import { socket } from "../../utils/socket";
+import { loginApi } from "../../../api/authApi";
+import { socket } from "../../../utils/socket";
 import {
   messageError,
   messageSuccess,
   messageWaning,
-} from "../../utils/notify";
+} from "../../../utils/notify";
 import { useNavigate } from "react-router-dom";
-import { setUserReducer } from "../../redux/slice/useSlice";
-import { setAccessToken } from "../../utils/storage";
+import { setUserReducer } from "../../../redux/slice/useSlice";
+import { setAccessToken } from "../../../utils/storage";
 
 interface LoginFormProps {
   setOpenLogin: (x: boolean) => void;

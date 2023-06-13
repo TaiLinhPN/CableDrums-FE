@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Td from "./Td";
-import { Button } from "antd";
+import { Button, Popconfirm } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { updateOrderApi } from "../../api/orderApi";
 import { messageError, messageSuccess } from "../../utils/notify";
 import { Order } from "../../redux/slice/orderSlice";
-
+import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 interface OrderRowProps {
   order: Order;
   no: number;
@@ -71,33 +71,29 @@ const OrderRow = ({ order, no }: OrderRowProps) => {
   const notesToShow = showAllNotes
     ? order.notes
     : [order.notes[order.notes.length - 1]];
+const confirm = () => {
+};
 
   return (
     <tr key={order._id} className="hover:bg-gray-100">
       <Td>{no}</Td>
-      <Td>{order.contractId}</Td>
+      <Td>
+        <Popconfirm
+          className="contract-id"
+          placement="topLeft"
+          title={`Contract id: ${order.contractId}`}
+          description={`Go to contract details`}
+          onConfirm={confirm}
+          okText="Go"
+        >
+          <p className="truncate w-20">{order.contractId}</p>
+        </Popconfirm>
+      </Td>
       <Td>{order.planner.username}</Td>
       <Td>{order.supplyVendor.username}</Td>
       <Td>{order.projectContractor.username}</Td>
       <Td>{order.cableDrumsToWithdraw}</Td>
       <Td>{order.status}</Td>
-      <Td>{order.createdAt}</Td>
-      <Td>
-        {notesToShow.map((note, index) => (
-          <div key={index} className="text-left  border-b">
-            <p>{note.username}</p>
-            <p>Time: {note.time}</p>
-            {note.message && <p>Note: {note.message}</p>}
-          </div>
-        ))}
-
-        {order.notes.length > 1 && (
-          <button onClick={toggleShowAllNotes} className="text-blue-500">
-            {showAllNotes ? "Show Less" : "Show More"}
-          </button>
-        )}
-      </Td>
-
       <Td>
         {(userType === "supplyVendor" || userType === "projectContractor") && (
           <Button
@@ -108,6 +104,32 @@ const OrderRow = ({ order, no }: OrderRowProps) => {
             {buttonLabel}
           </Button>
         )}
+      </Td>
+      <Td>
+        <div className="relative space-y-2">
+          {notesToShow.map((note, index) => (
+            <div key={index} className={`text-left   w-52 ${showAllNotes&& "bg-pale-silver p-1 rounded-md"}`}>
+              <p>{note.time}</p>
+              <p className=" whitespace-pre-wrap  break-words">
+                {note.username}
+              </p>
+              {note.message && <p>Note: {note.message}</p>}
+            </div>
+          ))}
+
+          {order.notes.length > 1 && (
+            <button
+              onClick={toggleShowAllNotes}
+              className="absolute top-0 right-0"
+            >
+              {showAllNotes ? (
+                <FiChevronUp size={"1.5em"} />
+              ) : (
+                <FiChevronDown size={"1.5em"} />
+              )}
+            </button>
+          )}
+        </div>
       </Td>
     </tr>
   );

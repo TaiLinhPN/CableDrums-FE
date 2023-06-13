@@ -1,20 +1,17 @@
-import { Button, Modal, Skeleton } from "antd";
+import {  Modal, Skeleton } from "antd";
 import { useEffect } from "react";
 import CreateUserForm from "../Form/CreateUserForm";
 import RemoveUserForm from "../Form/RemoveUserForm";
 import MyTable from ".";
 import Thead from "./Thead";
 import TBody from "./TBody";
-import Td from "./Td";
 import AccountRow from "./AccountRow";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import {
-  Account,
   fetchAccountData,
   setOpenModalCreate,
   setOpenModalRemove,
-  setReadyToRemoveAccount,
 } from "../../redux/slice/accountSlice";
 
 const headerTitles = ["NO.", "Username", "Email", "User Type", "Handle"];
@@ -28,33 +25,20 @@ const AccountTable = () => {
     fetchAccountData()(dispatch, isSet);
   }, []);
 
-  const handleDelete = (id: string) => {
-    const user = accounts.find((acc: Account) => acc._id === id);
-    dispatch(setReadyToRemoveAccount(user));
-    dispatch(setOpenModalRemove(true));
-  };
-
   return (
-    <div>
+    <div
+      style={{
+        maxHeight: "calc(100vh - 15vh)",
+        maxWidth: "calc(100vw - 10vw)",
+      }}
+      className=" overflow-auto overscroll-auto relative "
+    >
       <div>
-        <Button onClick={() => dispatch(setOpenModalCreate(true))}>
-          Create
-        </Button>
-
         <MyTable>
           <Thead titles={headerTitles}></Thead>
           <TBody>
             {accounts?.map((account, index) => (
-              <AccountRow key={account._id} no={index + 1} account={account}>
-                <Td>
-                  <button
-                    onClick={() => handleDelete(account._id)}
-                    className="text-red-600 hover:text-red-900"
-                  >
-                    Remove
-                  </button>
-                </Td>
-              </AccountRow>
+              <AccountRow key={account._id} no={index + 1} account={account} />
             ))}
           </TBody>
         </MyTable>
@@ -66,7 +50,7 @@ const AccountTable = () => {
         )}
 
         {!isLoading && accounts.length === 0 && (
-          <div className="min-w-full mt-8 text-center">No orders found.</div>
+          <div className="min-w-full mt-8 text-center">No account found.</div>
         )}
       </div>
 

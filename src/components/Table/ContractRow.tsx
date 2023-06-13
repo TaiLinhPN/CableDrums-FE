@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import Td from "./Td";
 import { Button, Modal } from "antd";
 import CreateOrderForm from "../Form/CreateOrderForm";
@@ -10,11 +10,10 @@ import {
 } from "../../redux/slice/ContractSlice";
 
 interface AccountRowProps {
-  children?: ReactNode;
   contract: Contract;
   no: number;
 }
-const ContractRow = ({ contract, no, children }: AccountRowProps) => {
+const ContractRow = ({ contract, no }: AccountRowProps) => {
   const dispatch = useDispatch();
   const userType = useSelector((state: RootState) => state.user.userType);
   const [openModalCreate, setOpenModalCreate] = useState(false);
@@ -27,13 +26,19 @@ const ContractRow = ({ contract, no, children }: AccountRowProps) => {
     <tr className="hover:bg-gray-100">
       <Td>{no}</Td>
       <Td>{contract.supplyVendor.username}</Td>
-      <Td>{contract.cableDrumCount}</Td>
-      <Td>{contract.cableDelivered}</Td>
-      <Td>{contract.cableRequired}</Td>
-      <Td>{contract.createAt}</Td>
-      <Td>{contract.expireAt}</Td>
+      <Td style="flex justify-center space-x-7">
+        <div className="w-10 ">{contract.cableDrumCount}</div>
+        <div className="w-10">{contract.cableDelivered}</div>
+        <div className="w-10">{contract.cableRequired}</div>
+      </Td>
       <Td>
-        {userType === "planner" && (
+        <div className="flex flex-col text-xs">
+          <div>{contract.createAt}</div>
+          <div>{contract.expireAt}</div>
+        </div>
+      </Td>
+      {userType === "planner" && (
+        <Td>
           <Button
             disabled={
               contract.cableDrumCount <=
@@ -43,12 +48,10 @@ const ContractRow = ({ contract, no, children }: AccountRowProps) => {
           >
             create order
           </Button>
-        )}
 
-        {/* <Button>Contract Details</Button> */}
-      </Td>
-      {children}
-
+          {/* <Button>Contract Details</Button> */}
+        </Td>
+      )}
       {openModalCreate && (
         <Modal
           centered
