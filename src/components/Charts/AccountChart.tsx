@@ -51,8 +51,6 @@ const AccountChart = () => {
     setAccountData(countUserTypes(accounts));
   }, [accounts]);
 
-  console.log(accountData);
-
   return (
     <div className="shadow p-4 rounded-lg bg-white h-min ">
       <div className="md:flex md:justify-between md:items-center">

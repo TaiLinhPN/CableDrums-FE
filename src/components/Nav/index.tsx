@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { clearAllStorage } from "../../utils/storage";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Drawer, Space, Input } from "antd";
+import { Button, Drawer } from "antd";
 import { useState } from "react";
 import { MdNotificationsActive } from "react-icons/md";
-const { Search } = Input;
+
 function Nav() {
   const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ function Nav() {
     setOpen(false);
   };
 
-  const onSearch = (value: string) => console.log(value);
+  
 
   return (
     <nav className={`flex justify-between items-center  py-2  px-8`}>
@@ -35,16 +35,7 @@ function Nav() {
         EnergySure tech
       </Link>
       <div className="flex space-x-4 items-center ">
-        <Space direction="vertical">
-          
-        <Search
-          placeholder="input search text"
-          allowClear
-          onSearch={onSearch}
-          style={{ width: 300 }}
-          // loading
-        />
-          </Space>
+   
 
         <div className="flex  flex-col text-black text-end">
           <p className=" font-thin text-xs">{user.userType}</p>
