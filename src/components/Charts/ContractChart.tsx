@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
 import { Progress, Tooltip } from "antd";
-import { Contract } from "../../redux/slice/ContractSlice";
+import { Contract } from "../../redux/slice/contractSlice";
 
 const totalContracts = (data: Contract[]) => {
   const totals = data.reduce(

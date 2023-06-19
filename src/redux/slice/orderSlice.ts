@@ -15,7 +15,11 @@ export interface Order {
     username: string;
   };
   _id: string;
-  contractId: string;
+  orderName: string;
+  contract: {
+    _id: string;
+    contractName: string;
+  };
   cableDrumsToWithdraw: number;
   status: string;
   notes: {
@@ -50,12 +54,12 @@ const orderSlice = createSlice({
     },
 
     updateOrder: (state, action) => {
-       const indexToUpdate = state.orders.findIndex(
-         (obj) => obj._id === action.payload._id
-       );
-       if (indexToUpdate !== -1) {
-         state.orders[indexToUpdate] = action.payload;
-       }
+      const indexToUpdate = state.orders.findIndex(
+        (obj) => obj._id === action.payload._id
+      );
+      if (indexToUpdate !== -1) {
+        state.orders[indexToUpdate] = action.payload;
+      }
     },
   },
 });

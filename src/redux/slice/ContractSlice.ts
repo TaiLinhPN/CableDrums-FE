@@ -3,6 +3,7 @@ import { getAllContractApi } from "../../api/contractApi";
 
 export interface Contract {
   _id: string;
+  contractName: string;
   supplyVendor: {
     _id: string;
     username: string;

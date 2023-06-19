@@ -1,31 +1,21 @@
 import { Skeleton } from "antd";
-import MyTable from ".";
-import Thead from "./Thead";
-import TBody from "./TBody";
-import OrderRow from "./OrderRow";
+import MyTable from "..";
+import Thead from "../Thead";
+import TBody from "../TBody";
+import RequestRow from "./OrderRow";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "../../../redux/store";
 import { useEffect, useState } from "react";
-import { Order, fetchOrderData } from "../../redux/slice/orderSlice";
-import SearchBox, { find } from "../Search";
+import { Order, fetchOrderData } from "../../../redux/slice/orderSlice";
+import SearchBox, { find } from "../../Search";
 
-const headerTitles = [
-  "NO.",
-  "Contract Id",
-  "Planner",
-  "Supply Vendor",
-  "Project Contractor",
-  "cable Requested",
-  "Current Status",
-  "Handle",
-  "Note",
-];
 const OrderTable = () => {
   const dispatch = useDispatch();
   const [searchData, setSearchData] = useState<Order[]>();
   const { orders, isLoading, isSet } = useSelector(
     (state: RootState) => state.order
   );
+  const userType = useSelector((state: RootState) => state.user.userType);
 
   useEffect(() => {
     fetchOrderData()(dispatch, isSet);
@@ -35,6 +25,22 @@ const OrderTable = () => {
     setSearchData(result);
     console.log(result);
   };
+
+  let headerTitles = [
+    "NO.",
+    "Request",
+    "Contract",
+    "Planner",
+    "Supply Vendor",
+    "Project Contractor",
+    "cable Requested",
+    "Current Status",
+    "Handle",
+    "Note",
+  ];
+  if (userType === "admin" || userType === "planner") {
+    delete headerTitles[8];
+  }
   return (
     <div>
       <div className="flex justify-end mb-4">
@@ -49,27 +55,11 @@ const OrderTable = () => {
       >
         <MyTable>
           <Thead titles={headerTitles}></Thead>
-          {searchData ? (
-            <TBody>
-              {searchData.map((order, index) => (
-                <OrderRow
-                  key={order._id}
-                  no={index + 1}
-                  order={order}
-                ></OrderRow>
-              ))}
-            </TBody>
-          ) : (
-            <TBody>
-              {orders.map((order, index) => (
-                <OrderRow
-                  key={order._id}
-                  no={index + 1}
-                  order={order}
-                ></OrderRow>
-              ))}
-            </TBody>
-          )}
+          <TBody>
+            {(searchData || orders).map((order, index) => (
+              <RequestRow key={order._id} no={index + 1} order={order} />
+            ))}
+          </TBody>
         </MyTable>
         {isLoading && (
           <div className="min-w-full mt-8 space-y-6">

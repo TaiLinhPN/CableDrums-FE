@@ -6,7 +6,7 @@ import authSlice from "./slice/authSlice";
 import userSlice from "./slice/useSlice";
 import orderSlice from "./slice/orderSlice";
 import accountSlice from "./slice/accountSlice";
-import contractSlice from "./slice/ContractSlice";
+import contractSlice from "./slice/contractSlice";
 
 const reducer = combineReducers({
   auth: authSlice.reducer,

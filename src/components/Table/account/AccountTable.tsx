@@ -1,20 +1,20 @@
 import { Modal, Skeleton } from "antd";
 import { useEffect, useState } from "react";
-import CreateUserForm from "../Form/CreateUserForm";
-import RemoveUserForm from "../Form/RemoveUserForm";
-import MyTable from ".";
-import Thead from "./Thead";
-import TBody from "./TBody";
+import CreateUserForm from "../../Form/CreateUserForm";
+import RemoveUserForm from "../../Form/RemoveUserForm";
+import MyTable from "..";
+import Thead from "../Thead";
+import TBody from "../TBody";
 import AccountRow from "./AccountRow";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "../../../redux/store";
 import {
   Account,
   fetchAccountData,
   setOpenModalCreate,
   setOpenModalRemove,
-} from "../../redux/slice/accountSlice";
-import SearchBox, { find } from "../Search";
+} from "../../../redux/slice/accountSlice";
+import SearchBox, { find } from "../../Search";
 
 const headerTitles = ["NO.", "Username", "Email", "User Type", "Handle"];
 
@@ -32,6 +32,7 @@ const AccountTable = () => {
     const result = find(accounts, value);
     setSearchData(result);
   };
+console.log("heheheh");
 
   return (
     <div>
@@ -48,27 +49,15 @@ const AccountTable = () => {
         <div>
           <MyTable>
             <Thead titles={headerTitles}></Thead>
-            {searchData ? (
-              <TBody>
-                {searchData.map((account, index) => (
-                  <AccountRow
-                    key={account._id}
-                    no={index + 1}
-                    account={account}
-                  />
-                ))}
-              </TBody>
-            ) : (
-              <TBody>
-                {accounts.map((account, index) => (
-                  <AccountRow
-                    key={account._id}
-                    no={index + 1}
-                    account={account}
-                  />
-                ))}
-              </TBody>
-            )}
+            <TBody>
+              {(searchData || accounts).map((account, index) => (
+                <AccountRow
+                  key={account._id}
+                  no={index + 1}
+                  account={account}
+                />
+              ))}
+            </TBody>
           </MyTable>
           {isLoading && (
             <div className="min-w-full mt-8 space-y-6">

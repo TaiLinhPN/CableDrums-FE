@@ -1,13 +1,13 @@
 import { useState } from "react";
-import Td from "./Td";
+import Td from "../Td";
 import { Button, Modal } from "antd";
-import CreateOrderForm from "../Form/CreateOrderForm";
+import CreateOrderForm from "../../Form/CreateOrderForm";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "../../../redux/store";
 import {
   Contract,
   setContractToCreateOrder,
-} from "../../redux/slice/ContractSlice";
+} from "../../../redux/slice/contractSlice";
 
 interface AccountRowProps {
   contract: Contract;
@@ -25,6 +25,7 @@ const ContractRow = ({ contract, no }: AccountRowProps) => {
   return (
     <tr className="hover:bg-gray-100">
       <Td>{no}</Td>
+      <Td>{contract.contractName}</Td>
       <Td>{contract.supplyVendor.username}</Td>
       <Td style="flex justify-center space-x-7">
         <div className="w-10 ">{contract.cableDrumCount}</div>
@@ -46,7 +47,7 @@ const ContractRow = ({ contract, no }: AccountRowProps) => {
             }
             onClick={handleCreateOrder}
           >
-            create order
+            create Request
           </Button>
 
           {/* <Button>Contract Details</Button> */}

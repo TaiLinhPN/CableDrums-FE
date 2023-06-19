@@ -1,20 +1,16 @@
 import { Skeleton } from "antd";
-import MyTable from ".";
-import Thead from "./Thead";
-import TBody from "./TBody";
+import MyTable from "..";
+import Thead from "../Thead";
+import TBody from "../TBody";
 import ContractRow from "./ContractRow";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "../../../redux/store";
 import { useEffect, useState } from "react";
-import { Contract, fetchContractData } from "../../redux/slice/ContractSlice";
-import SearchBox, { find } from "../Search";
-const headerTitles = [
-  "NO.",
-  // "Contract ID",
-  "Supply Vendor",
-  "Count / Delivered / Requested",
-  "Created / Expires at",
-];
+import {
+  Contract,
+  fetchContractData,
+} from "../../../redux/slice/contractSlice";
+import SearchBox, { find } from "../../Search";
 
 const ContractTable = () => {
   const dispatch = useDispatch();
@@ -22,14 +18,27 @@ const ContractTable = () => {
   const { contracts, isLoading, isSet } = useSelector(
     (state: RootState) => state.contract
   );
+  const userType = useSelector((state: RootState) => state.user.userType);
+
   useEffect(() => {
     fetchContractData()(dispatch, isSet);
   }, []);
 
-    const onSearch = (value: string) => {
-      const result = find(contracts, value);
-      setSearchData(result); 
-    };
+  const onSearch = (value: string) => {
+    const result = find(contracts, value);
+    setSearchData(result);
+  };
+
+  let headerTitles = [
+    "NO.",
+    "Contract",
+    "Supply Vendor",
+    "Count / Delivered / Requested",
+    "Created / Expires at",
+  ];
+  if (userType === "planner") {
+    headerTitles.push("Handle");
+  }
   return (
     <div>
       <div className="flex justify-end mb-4">
@@ -44,27 +53,16 @@ const ContractTable = () => {
       >
         <MyTable>
           <Thead titles={headerTitles}></Thead>
-          {searchData ? (
-            <TBody>
-              {searchData.map((contract, index) => (
-                <ContractRow
-                  key={contract._id}
-                  no={index + 1}
-                  contract={contract}
-                ></ContractRow>
-              ))}
-            </TBody>
-          ) : (
-            <TBody>
-              {contracts.map((contract, index) => (
-                <ContractRow
-                  key={contract._id}
-                  no={index + 1}
-                  contract={contract}
-                ></ContractRow>
-              ))}
-            </TBody>
-          )}
+
+          <TBody>
+            {(searchData || contracts).map((contract, index) => (
+              <ContractRow
+                key={contract._id}
+                no={index + 1}
+                contract={contract}
+              ></ContractRow>
+            ))}
+          </TBody>
         </MyTable>
         {isLoading && (
           <div className="min-w-full mt-8 space-y-6">

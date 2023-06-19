@@ -14,7 +14,7 @@ import {
   setNewContract,
   updateContractWhenNewOrder,
   updateContractWhenOrderCompleted,
-} from "../redux/slice/ContractSlice";
+} from "../redux/slice/contractSlice";
 import { Order, setNewOrder, updateOrder } from "../redux/slice/orderSlice";
 import { messageWaning } from "../utils/notify";
 import NotFoundAccountPage from "./NotFoundAccountPage";
@@ -144,7 +144,7 @@ const MainPage = () => {
     {
       to: "order",
       onClick: () => handleButtonClick(3),
-      text: "Order",
+      text: "Request",
       icon: <BiFoodMenu size={"1.5em"} />,
       isSelected: selectedTable === 3,
       allowedUserTypes: [

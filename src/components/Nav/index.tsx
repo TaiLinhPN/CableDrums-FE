@@ -26,8 +26,6 @@ function Nav() {
     setOpen(false);
   };
 
-  
-
   return (
     <nav className={`flex justify-between items-center  py-2  px-8`}>
       <Link to="/" className="flex items-center font-semibold text-lg">
@@ -35,8 +33,6 @@ function Nav() {
         EnergySure tech
       </Link>
       <div className="flex space-x-4 items-center ">
-   
-
         <div className="flex  flex-col text-black text-end">
           <p className=" font-thin text-xs">{user.userType}</p>
           <p className=" font-semibold text-lg">{user.name}</p>

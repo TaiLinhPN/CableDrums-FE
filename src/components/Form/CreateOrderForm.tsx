@@ -117,7 +117,7 @@ const CreateOrderForm = ({ setModel }: CreateOrderFormProps) => {
         onClick={handleCreateOrder}
         disabled={isButtonDisabled}
       >
-        Create order
+        Create request
       </Button>
     </div>
   );

@@ -1,5 +1,5 @@
 import ContractChart from "../components/Charts/ContractChart";
-import ContractTable from "../components/Table/ContractTable";
+import ContractTable from "../components/Table/contract/ContractTable";
 
 const ContractPage = () => {
   return (

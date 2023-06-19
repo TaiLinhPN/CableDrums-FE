@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import AccountChart from "../components/Charts/AccountChart";
-import AccountTable from "../components/Table/AccountTable";
+import AccountTable from "../components/Table/account/AccountTable";
 import { useDispatch } from "react-redux";
 import { setOpenModalCreate } from "../redux/slice/accountSlice";
 

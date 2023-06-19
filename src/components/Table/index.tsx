@@ -5,10 +5,7 @@ interface TableProps {
 }
 const MyTable = ({ children }: TableProps) => {
   return (
-    <table
-      className="bg-white rounded-lg overflow-hidden relative"
-
-    >
+    <table className="bg-white rounded-lg overflow-hidden relative">
       {children}
     </table>
   );

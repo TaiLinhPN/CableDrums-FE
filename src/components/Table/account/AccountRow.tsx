@@ -1,7 +1,10 @@
-
 import { ReactNode } from "react";
-import Td from "./Td";
-import { Account, setOpenModalRemove, setReadyToRemoveAccount } from "../../redux/slice/accountSlice";
+import Td from "../Td";
+import {
+  Account,
+  setOpenModalRemove,
+  setReadyToRemoveAccount,
+} from "../../../redux/slice/accountSlice";
 import { Button } from "antd";
 import { useDispatch } from "react-redux";
 
@@ -13,10 +16,10 @@ interface AccountRowProps {
 
 const AccountRow = ({ account, no, children }: AccountRowProps) => {
   const dispatch = useDispatch();
-    const handleDelete = () => {
-      dispatch(setReadyToRemoveAccount(account));
-      dispatch(setOpenModalRemove(true));
-    };
+  const handleDelete = () => {
+    dispatch(setReadyToRemoveAccount(account));
+    dispatch(setOpenModalRemove(true));
+  };
   return (
     <tr className="hover:bg-gray-100 ">
       <Td>{no}</Td>

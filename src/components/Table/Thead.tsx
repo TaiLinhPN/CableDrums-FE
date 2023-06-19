@@ -1,15 +1,14 @@
 interface TheadProps {
-  titles: string[]
+  titles: string[];
 }
 const Thead = ({ titles }: TheadProps) => {
   return (
-    <thead className="bg-gradient-to-r from-bazaar to-maize w-full  ">
+    <thead className="bg-gradient-to-r from-bazaar to-maize w-full text-white ">
       <tr>
         {titles.map((title, index) => (
           <th
             key={index}
-            className="px-3 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
-          >
+            className="px-3 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
             {title}
           </th>
         ))}
@@ -18,4 +17,4 @@ const Thead = ({ titles }: TheadProps) => {
   );
 };
 
-export default Thead
+export default Thead;

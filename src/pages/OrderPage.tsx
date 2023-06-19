@@ -1,4 +1,4 @@
-import OrderTable from "../components/Table/OrderTable";
+import OrderTable from "../components/Table/order/OrderTable";
 
 const OrderPage = () => {
   return (
@@ -10,7 +10,7 @@ const OrderPage = () => {
         }}
         className=" overflow-auto overscroll-auto relative"
       > */}
-        <OrderTable />
+      <OrderTable />
       {/* </div> */}
     </div>
   );
