@@ -1,9 +1,8 @@
-import { Form, Input } from "antd";
 import { useState } from "react";
-import { setEmail, setStateAuth } from "../../../redux/slice/authSlice";
+import { useForm } from "react-hook-form";
+import { setStateAuth } from "../../../redux/slice/authSlice";
 import { useDispatch } from "react-redux";
 import { loginApi } from "../../../api/authApi";
-import { socket } from "../../../utils/socket";
 import {
   messageError,
   messageSuccess,
@@ -12,10 +11,20 @@ import {
 import { useNavigate } from "react-router-dom";
 import { setUserReducer } from "../../../redux/slice/useSlice";
 import { setAccessToken } from "../../../utils/storage";
+import {
+  emailValidator,
+  passwordValidator,
+} from "../../../utils/formValidators/login";
 
-interface LoginFormProps {
+export interface LoginFormProps {
   setOpenLogin: (x: boolean) => void;
 }
+
+export interface FormData {
+  email: string;
+  password: string;
+}
+
 const LoginForm = ({ setOpenLogin }: LoginFormProps) => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -23,6 +32,14 @@ const LoginForm = ({ setOpenLogin }: LoginFormProps) => {
     email: "",
     password: "",
   });
+
+  const {
+    register,
+    handleSubmit,
+    // watch,
+    formState: { errors },
+  } = useForm<FormData>();
+
   const handleSubmitLogin = async () => {
     try {
       const response = await loginApi(userLogin);
@@ -35,17 +52,16 @@ const LoginForm = ({ setOpenLogin }: LoginFormProps) => {
         dispatch(setUserReducer(data.user));
         Navigate("/");
         messageSuccess("Login successful, welcome");
-        socket.emit("user-connect", data.user._id);
       }
     } catch (error: any) {
-      if (error.response.status === 400) {
-        dispatch(setEmail(userLogin.email));
-        messageWaning("You must reset password for the first login");
-        setOpenLogin(false);
-      } else {
-        console.log("Error login:", error);
-        messageError(error);
-      }
+      // if (error.response.status === 400) {
+      //   dispatch(setEmail(userLogin.email));
+      //   messageWaning("You must reset password for the first login");
+      //   setOpenLogin(false);
+      // } else {
+      //   console.log("Error login:", error);
+      messageError(error);
+      // }
     }
   };
 
@@ -57,48 +73,46 @@ const LoginForm = ({ setOpenLogin }: LoginFormProps) => {
     const { name, value } = event.target;
     setUserLogin({ ...userLogin, [name]: value });
   };
+
+  if (errors.email?.message) {
+    messageWaning(errors.email.message);
+    errors.email = undefined;
+  }
+  if (errors.password?.message) {
+    messageWaning(errors.password.message);
+    errors.password = undefined;
+  }
   return (
-    <Form className="form-login" onFinish={handleSubmitLogin}>
+    <form className="form-login" onSubmit={handleSubmit(handleSubmitLogin)}>
       <h1 className="head">Log in</h1>
       <div>
-        <Form.Item
-          name="email"
-          rules={[{ required: true, message: "Please enter your name" }]}
-        >
-          <Input
-            placeholder="Your email?"
-            className={"input-login"}
-            name="email"
-            value={userLogin.email}
-            onChange={handleInputChangeLogin}
-          />
-        </Form.Item>
+        <input
+          className={"input-login mb-4 rounded-lg"}
+          type="email"
+          placeholder="Email"
+          {...register("email", { required: true, validate: emailValidator })}
+          value={userLogin.email}
+          onChange={handleInputChangeLogin}
+        />
       </div>
-
       <div>
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your password",
-            },
-          ]}
-        >
-          <Input.Password
-            placeholder="Password?"
-            className={"input-login"}
-            name="password"
-            value={userLogin.password}
-            onChange={handleInputChangeLogin}
-          />
-        </Form.Item>
+        <input
+          className={"input-login  mb-4 rounded-lg"}
+          type="password"
+          placeholder="Password"
+          {...register("password", {
+            required: true,
+            validate: passwordValidator,
+          })}
+          value={userLogin.password}
+          onChange={handleInputChangeLogin}
+        />
       </div>
       <a style={{ marginBottom: "10px" }} onClick={() => setOpenLogin(false)}>
         Forgot password?
       </a>
       <button className="button-login">Log in</button>
-    </Form>
+    </form>
   );
 };
 

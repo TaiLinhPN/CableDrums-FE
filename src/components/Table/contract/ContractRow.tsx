@@ -22,6 +22,10 @@ const ContractRow = ({ contract, no }: AccountRowProps) => {
     dispatch(setContractToCreateOrder(contract));
     setOpenModalCreate(true);
   };
+
+  // const moveToDetail = () => {
+  //   navigate("/contract/" + contract._id);
+  // };
   return (
     <tr className="hover:bg-gray-100">
       <Td>{no}</Td>
@@ -38,8 +42,8 @@ const ContractRow = ({ contract, no }: AccountRowProps) => {
           <div>{contract.expireAt}</div>
         </div>
       </Td>
-      {userType === "planner" && (
-        <Td>
+        {userType === "planner" && (
+      <Td>
           <Button
             disabled={
               contract.cableDrumCount <=
@@ -49,10 +53,9 @@ const ContractRow = ({ contract, no }: AccountRowProps) => {
           >
             create Request
           </Button>
-
-          {/* <Button>Contract Details</Button> */}
-        </Td>
-      )}
+        {/* <Button onClick={moveToDetail}>Detail</Button> */}
+      </Td>
+        )}
       {openModalCreate && (
         <Modal
           centered

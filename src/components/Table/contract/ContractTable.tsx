@@ -1,4 +1,3 @@
-import { Skeleton } from "antd";
 import MyTable from "..";
 import Thead from "../Thead";
 import TBody from "../TBody";
@@ -11,6 +10,7 @@ import {
   fetchContractData,
 } from "../../../redux/slice/contractSlice";
 import SearchBox, { find } from "../../Search";
+import Loading from "../../Loading";
 
 const ContractTable = () => {
   const dispatch = useDispatch();
@@ -64,16 +64,12 @@ const ContractTable = () => {
             ))}
           </TBody>
         </MyTable>
-        {isLoading && (
-          <div className="min-w-full mt-8 space-y-6">
-            <Skeleton active />
-            <Skeleton active />
-          </div>
-        )}
 
-        {!isLoading && contracts.length === 0 && (
-          <div className="min-w-full mt-8 text-center">No contract found.</div>
-        )}
+        <Loading
+          isLoading={isLoading}
+          dataLength={contracts.length}
+          text="No contract found."
+        />
       </div>
     </div>
   );

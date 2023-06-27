@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { socket } from "../utils/socket";
 import {
@@ -22,14 +22,19 @@ import SideBar from "../components/SideBar";
 import { FaFileContract } from "react-icons/fa";
 import { BiFoodMenu } from "react-icons/bi";
 import { MdSwitchAccount } from "react-icons/md";
+import { setNewNotification } from "../redux/slice/notificationSlice";
 
 const MainPage = () => {
   const dispatch = useDispatch();
-  const { userId, userType } = useSelector((state: RootState) => state.user);
-  const [selectedTable, setSelectedTable] = useState(0);
+    const location = useLocation();
+    const currentUrl = location.pathname;
+console.log(currentUrl);
 
-  const handleButtonClick = (tableNumber: number) => {
-    setSelectedTable(tableNumber);
+  const { userId, userType } = useSelector((state: RootState) => state.user);
+  const [selectedTable, setSelectedTable] = useState(location.pathname);
+
+  const handleButtonClick = (url: string) => {
+    setSelectedTable(url);
   };
   // listen to the event of account
   useEffect(() => {
@@ -91,31 +96,32 @@ const MainPage = () => {
           data.projectContractor._id === userId)
       ) {
         dispatch(setNewOrder(data));
-        messageWaning("New Order was created");
+        // messageWaning("New Order was created");
       }
     });
     socket.on("update-order", (data: Order) => {
       if (userType === "planner") {
-        messageWaning("An Order was updated ");
         dispatch(updateOrder(data));
       } else if (userType === "supplyVendor") {
         if (data.supplyVendor._id === userId) {
           dispatch(updateOrder(data));
-          if (data.status !== "readyForPickup") {
-            messageWaning("An Order was updated ");
-          }
         }
       } else if (userType === "projectContractor") {
         console.log("projectContractor");
         console.log(data.projectContractor._id);
 
         if (data.projectContractor._id === userId) {
-          dispatch(updateOrder(data));
-          if (data.status !== "completed") {
-            messageWaning("An Order was updated ");
-          }
+          dispatch(updateOrder(data));     
         }
       }
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on("notification", (data: any) => {
+      console.log(data);
+      dispatch(setNewNotification(data.data));
+      messageWaning(data.data.content);
     });
   }, []);
 
@@ -127,26 +133,26 @@ const MainPage = () => {
   const links = [
     {
       to: "account",
-      onClick: () => handleButtonClick(1),
+      onClick: () => handleButtonClick("/account"),
       text: "Account",
       icon: <MdSwitchAccount size={"1.5em"} />,
-      isSelected: selectedTable === 1,
+      isSelected: selectedTable === "/account",
       allowedUserTypes: ["admin"],
     },
     {
       to: "contract",
-      onClick: () => handleButtonClick(2),
+      onClick: () => handleButtonClick("/contract"),
       text: "Contract",
       icon: <FaFileContract size={"1.5em"} />,
-      isSelected: selectedTable === 2,
+      isSelected: selectedTable === "/contract",
       allowedUserTypes: ["admin", "planner", "supplyVendor"],
     },
     {
-      to: "order",
-      onClick: () => handleButtonClick(3),
+      to: "request",
+      onClick: () => handleButtonClick("/request"),
       text: "Request",
       icon: <BiFoodMenu size={"1.5em"} />,
-      isSelected: selectedTable === 3,
+      isSelected: selectedTable === "/request",
       allowedUserTypes: [
         "admin",
         "planner",

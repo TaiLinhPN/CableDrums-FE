@@ -1,4 +1,4 @@
-import { Modal, Skeleton } from "antd";
+import { Button, Modal } from "antd";
 import { useEffect, useState } from "react";
 import CreateUserForm from "../../Form/CreateUserForm";
 import RemoveUserForm from "../../Form/RemoveUserForm";
@@ -15,6 +15,7 @@ import {
   setOpenModalRemove,
 } from "../../../redux/slice/accountSlice";
 import SearchBox, { find } from "../../Search";
+import Loading from "../../Loading";
 
 const headerTitles = ["NO.", "Username", "Email", "User Type", "Handle"];
 
@@ -32,11 +33,16 @@ const AccountTable = () => {
     const result = find(accounts, value);
     setSearchData(result);
   };
-console.log("heheheh");
 
   return (
     <div>
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between mb-4">
+        <Button
+          className="bg-white  h-10"
+          onClick={() => dispatch(setOpenModalCreate(true))}
+        >
+          Create an account
+        </Button>
         <SearchBox onSearch={onSearch} />
       </div>
       <div
@@ -59,16 +65,11 @@ console.log("heheheh");
               ))}
             </TBody>
           </MyTable>
-          {isLoading && (
-            <div className="min-w-full mt-8 space-y-6">
-              <Skeleton active />
-              <Skeleton active />
-            </div>
-          )}
-
-          {!isLoading && accounts.length === 0 && (
-            <div className="min-w-full mt-8 text-center">No account found.</div>
-          )}
+          <Loading
+            isLoading={isLoading}
+            dataLength={accounts.length}
+            text="No account found."
+          />
         </div>
 
         {isOpenModalCreate && (

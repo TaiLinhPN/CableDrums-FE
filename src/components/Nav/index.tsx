@@ -6,12 +6,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button, Drawer } from "antd";
 import { useState } from "react";
 import { MdNotificationsActive } from "react-icons/md";
+import { socket } from "../../utils/socket";
+import Notification from "../Notification"
 
 function Nav() {
   const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
-
+const userId = useSelector((state: RootState) => state.user.userId);
   const handleLogOut = () => {
+    socket.emit("leave", userId);
     navigate("/login");
     clearAllStorage();
     window.location.reload();
@@ -55,9 +58,7 @@ function Nav() {
         onClose={onClose}
         open={open}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <Notification />
       </Drawer>
     </nav>
   );

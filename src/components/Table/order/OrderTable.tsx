@@ -1,4 +1,3 @@
-import { Skeleton } from "antd";
 import MyTable from "..";
 import Thead from "../Thead";
 import TBody from "../TBody";
@@ -8,6 +7,7 @@ import { RootState } from "../../../redux/store";
 import { useEffect, useState } from "react";
 import { Order, fetchOrderData } from "../../../redux/slice/orderSlice";
 import SearchBox, { find } from "../../Search";
+import Loading from "../../Loading";
 
 const OrderTable = () => {
   const dispatch = useDispatch();
@@ -61,16 +61,11 @@ const OrderTable = () => {
             ))}
           </TBody>
         </MyTable>
-        {isLoading && (
-          <div className="min-w-full mt-8 space-y-6">
-            <Skeleton active />
-            <Skeleton active />
-          </div>
-        )}
-
-        {!isLoading && orders.length === 0 && (
-          <div className="min-w-full mt-8 text-center">No orders found.</div>
-        )}
+        <Loading
+          isLoading={isLoading}
+          dataLength={orders.length}
+          text="No orders found."
+        />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import ContractChart from "../components/Charts/ContractChart";
+// import ContractChart from "../components/Charts/ContractChart";
 import ContractTable from "../components/Table/contract/ContractTable";
 
 const ContractPage = () => {
@@ -6,7 +6,7 @@ const ContractPage = () => {
     <div className="flex space-x-4 justify-center">
       <ContractTable />
       <div className="space-y-4">
-        <ContractChart />
+        {/* <ContractChart /> */}
       </div>
     </div>
   );
